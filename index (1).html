@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ryuichi App - Full Edition</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+    <!-- Menghubungkan file CSS Eksternal -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- AUTH GATEWAY (LOGIN & REGISTER) -->
+    <div class="auth-container" id="authGateway">
+        <div class="auth-box">
+            <div class="left-side">
+                <h1>WELCOME<br>BACK!</h1>
+                <p>Masuk atau daftar untuk menggunakan aplikasi lengkap dengan sistem database & fitur AI/Downloader.</p>
+            </div>
+
+            <div class="right-side">
+                <h2 id="authTitle">Sign Up</h2>
+                <form id="authForm" onsubmit="handleAuthSubmit(event)">
+                    <div class="input-box">
+                        <input type="text" id="authUsername" required>
+                        <label>Username</label>
+                        <i class='bx bx-user'></i>
+                    </div>
+
+                    <div class="input-box" id="emailBox">
+                        <input type="email" id="authEmail" required>
+                        <label>Email</label>
+                        <i class='bx bx-envelope'></i>
+                    </div>
+
+                    <div class="input-box">
+                        <input type="password" id="authPassword" required>
+                        <label>Password</label>
+                        <i class='bx bx-lock-alt'></i>
+                    </div>
+
+                    <div class="input-box" id="roleSelectionBox">
+                        <select id="authRole">
+                            <option value="member" selected>Member</option>
+                            <option value="vip">VIP</option>
+                            <option value="vvip">VVIP</option>
+                            <option value="admin">Admin</option>
+                            <option value="dev">Dev</option>
+                        </select>
+                        <label>Pilih Role</label>
+                        <i class='bx bx-shield'></i>
+                    </div>
+
+                    <div class="input-box" id="expirySelectionBox">
+                        <select id="authExpiry">
+                            <option value="1_day">1 Hari</option>
+                            <option value="1_week">1 Minggu</option>
+                            <option value="1_month">1 Bulan</option>
+                            <option value="permanent" selected>Permanen</option>
+                        </select>
+                        <label>Waktu Akun Aktif</label>
+                        <i class='bx bx-time'></i>
+                    </div>
+
+                    <button type="submit" class="liquid-btn light" id="authSubmitBtn">Sign Up</button>
+
+                    <div class="login-link">
+                        <p id="switchText">Already have an account? <a href="#" onclick="toggleAuthMode(event)">Login</a></p>
+                    </div>
+
+                    <div class="auth-msg" id="authMessage"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- DRAWER MENU KIRI ATAS -->
+    <div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer(event)">
+        <div class="drawer-content" onclick="event.stopPropagation()">
+            <div class="drawer-header">
+                <h3>MENU UTAMA</h3>
+                <div class="icon-btn" onclick="toggleDrawer()" style="width: 30px; height: 30px; font-size: 12px;"><i class="fa-solid fa-xmark"></i></div>
+            </div>
+
+            <div class="drawer-profile-card">
+                <div class="drawer-avatar" id="drawerAvatar">US</div>
+                <div class="drawer-user-info">
+                    <h4 id="drawerUsername">Username</h4>
+                    <p id="drawerEmail">email@domain.com</p>
+                    <span class="role-badge member" id="drawerRoleBadge" style="font-size:8px; padding:2px 8px; margin-top:4px; display:inline-block;">MEMBER</span>
+                </div>
+            </div>
+
+            <div class="drawer-menu-list">
+                <div class="drawer-menu-item" onclick="toggleDrawer(); openFeaturePage('info_akun')">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>Informasi Akun</span>
+                </div>
+                <div class="drawer-menu-item" onclick="toggleDrawer(); openFeaturePage('setelan')">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Setelan & Foto Profil</span>
+                </div>
+                <div class="drawer-menu-item" id="menuDevCustomizer" style="display:none;" onclick="toggleDrawer(); openFeaturePage('dev_customizer')">
+                    <i class="fa-solid fa-palette"></i>
+                    <span>Customizer Dev (BG & Video)</span>
+                </div>
+            </div>
+            
+            <button class="liquid-btn danger" onclick="logoutSession()" style="width: 100%; font-size: 11px; padding: 10px;">Keluar Akun</button>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD APP CONTAINER -->
+    <div class="app-container" id="mainDashboard">
+        
+        <div class="top-header">
+            <div class="header-title">
+                <div class="menu-dots-btn" onclick="toggleDrawer()" title="Menu">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+                <div class="header-title-text">
+                    <h2>Halo,</h2>
+                    <span id="headerUsername">User 🌙</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="icon-btn" onclick="openFeaturePage('global_chat')" title="Global Public Chat">
+                    <svg class="custom-chat-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.48 2 2 6.03 2 11c0 2.22.84 4.25 2.24 5.86L3 21l4.47-1.18C8.75 20.35 10.33 20.5 12 20.5c5.52 0 10-4.03 10-9s-4.48-9-10-9zm0 13.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3.5 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm-7 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+                    </svg>
+                </div>
+                <div class="icon-btn" onclick="logoutSession()" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></div>
+            </div>
+        </div>
+
+        <!-- HALAMAN UTAMA DASHBOARD -->
+        <div class="section-view active" id="viewHome">
+            
+            <div class="banner-card">
+                <video id="dashboardVideo" src="https://files.catbox.moe/5ahr4x.mp4" loop playsinline></video>
+            </div>
+
+            <div class="user-card">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatarBox">
+                        <span id="userAvatarText">US</span>
+                    </div>
+                    <div class="user-details">
+                        <h3 id="profileName">Username</h3>
+                        <p id="profileEmail">email@domain.com</p>
+                    </div>
+                </div>
+                <div class="role-badge" id="profileRoleBadge">MEMBER</div>
+            </div>
+
+            <div id="adminMenuSection" style="display: none;">
+                <div class="section-divider">
+                    <span><i class="fa-solid fa-database"></i> PANEL RESTRICTED</span>
+                    <div class="line"></div>
+                </div>
+                <div class="features-grid">
+                    <div class="grid-card" onclick="switchView('database')">
+                        <div class="icon-box"><i class="fa-solid fa-table-cells"></i></div>
+                        <div>
+                            <h4>DATABASE USERS</h4>
+                            <p>Kelola Data Pengguna</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-divider">
+                <span><i class="fa-solid fa-compact-disc"></i> MEDIA & ANIME</span>
+                <div class="line"></div>
+            </div>
+            <div class="features-grid" id="grid_media">
+                <div class="grid-card" id="card_jkt48_music" onclick="checkAccessAndOpen('jkt48_music', 'member')">
+                    <div class="icon-box"><i class="fa-solid fa-music"></i></div>
+                    <div><h4>JKT48 MUSIC</h4><p>Random Lagu</p></div>
+                </div>
+                <div class="grid-card" id="card_jkt48_video" onclick="checkAccessAndOpen('jkt48_video', 'vip')">
+                    <div class="icon-box"><i class="fa-solid fa-video"></i></div>
+                    <div><h4>JKT48 VIDEO</h4><p>Random Video</p></div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="section-view" id="viewDatabase">
+            <div class="top-header">
+                <h3>Database Pengguna Terdaftar</h3>
+                <button class="liquid-btn light" style="width: auto; padding: 6px 12px; margin-top:0;" onclick="switchView('home')">Kembali</button>
+            </div>
+            <p style="font-size: 11px; color: #a1a1aa;">Halaman ini aman dan hanya dapat diakses oleh role Admin atau Dev.</p>
+            
+            <div class="db-table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Avatar</th>
+                            <th>Username</th>
+                            <th>Role</th>
+                            <th>Masa Aktif</th>
+                            <th>Status</th>
+                            <th>Aksi Role</th>
+                        </tr>
+                    </thead>
+                    <tbody id="databaseTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section-view" id="viewFeaturePage">
+            <div class="feature-page-header">
+                <button class="liquid-btn light" style="width: auto; margin-top: 0; padding: 8px 16px; font-size: 12px;" onclick="switchView('home')">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali
+                </button>
+                <span id="featureHeaderTitle" style="font-size: 13px; font-weight: 800; color: #f4f4f5;">TITLE FITUR</span>
+            </div>
+
+            <div class="feature-card-box" id="featurePageBody"></div>
+        </div>
+
+    </div>
+
+    <div class="floating-replace-btn" id="floatingReplaceBtn" onclick="executePageReplace()" title="Muat Ulang Halaman">
+        <i class="fa-solid fa-rotate-right"></i>
+    </div>
+
+    <nav class="bottom-nav" id="mainNav">
+        <a class="nav-item active" onclick="switchView('home')">
+            <i class="fa-solid fa-house"></i>
+            <span>HOME</span>
+        </a>
+        <a class="nav-item" id="navDatabaseBtn" style="display: none;" onclick="switchView('database')">
+            <i class="fa-solid fa-database"></i>
+            <span>DATABASE</span>
+        </a>
+        <a class="nav-item" onclick="logoutSession()">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>KELUAR</span>
+        </a>
+    </nav>
+
+    <!-- Menghubungkan file JavaScript Eksternal -->
+    <script src="script.js"></script>
+</body>
+</html>
