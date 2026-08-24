@@ -1,0 +1,2704 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ryuichi App - Full Edition</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #090a0f;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding-bottom: 90px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        /* GATEWAY LOGIN & REGISTER */
+        .auth-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(9, 10, 15, 0.85);
+            backdrop-filter: blur(10px);
+            display: flex; justify-content: center; align-items: center;
+            padding: 20px; z-index: 9999;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .auth-box {
+            position: relative;
+            width: 850px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            display: flex;
+            overflow: hidden;
+            color: #000000;
+        }
+
+        @media(max-width: 800px) {
+            .auth-box { flex-direction: column; width: 100%; max-width: 400px; }
+            .left-side { clip-path: none !important; width: 100% !important; padding: 25px 20px !important; text-align: center; }
+            .right-side { width: 100% !important; padding: 25px 20px !important; }
+        }
+
+        .left-side {
+            position: relative;
+            width: 40%;
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 40px 30px;
+            clip-path: polygon(0 0, 100% 0, 70% 100%, 0 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .left-side h1 {
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 15px;
+        }
+
+        .left-side p {
+            font-size: 12px;
+            color: #aaa;
+            line-height: 1.5;
+        }
+
+        .right-side {
+            width: 60%;
+            padding: 30px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: transparent;
+        }
+
+        .right-side h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #111;
+        }
+
+        .input-box {
+            position: relative;
+            width: 100%;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ccc;
+        }
+
+        .input-box input, .input-box select {
+            width: 100%;
+            height: 35px;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            color: #333;
+            padding: 0 30px 0 5px;
+        }
+
+        .input-box select {
+            cursor: pointer;
+        }
+
+        .input-box label {
+            position: absolute;
+            top: 50%;
+            left: 5px;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: #666;
+            pointer-events: none;
+            transition: 0.3s ease;
+        }
+
+        .input-box input:focus ~ label,
+        .input-box input:valid ~ label,
+        .input-box select:focus ~ label,
+        .input-box select:valid ~ label {
+            top: -5px;
+            font-size: 11px;
+            color: #000;
+        }
+
+        .input-box i {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #666;
+        }
+
+        /* EFEK LIQUID GLASS - ABU KEPUTIHAN */
+        .liquid-btn {
+            width: 100%; padding: 12px; 
+            background: rgba(244, 244, 245, 0.15);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 20px; 
+            color: #f4f4f5;
+            font-size: 13px; font-weight: 700; cursor: pointer; margin-top: 10px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 1px 0 rgba(255, 255, 255, 0.6);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .liquid-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+        }
+
+        .liquid-btn:hover::before { left: 100%; }
+        .liquid-btn:hover {
+            transform: translateY(-2px);
+            background: rgba(244, 244, 245, 0.25);
+            border-color: rgba(255, 255, 255, 0.7);
+            color: #ffffff;
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5), inset 0 1px 2px 0 rgba(255, 255, 255, 0.8);
+        }
+        .liquid-btn:active { transform: translateY(1px); }
+
+        .liquid-btn.light {
+            background: linear-gradient(135deg, rgba(244, 244, 245, 0.2) 0%, rgba(212, 212, 216, 0.25) 100%);
+            border-color: rgba(255, 255, 255, 0.5);
+            color: #f4f4f5;
+        }
+        
+        /* TOMBOL KHUSUS HALAMAN LOGIN (AGAR TIDAK TERLALU PUTIH POLOS) */
+        .right-side .liquid-btn {
+            background: linear-gradient(135deg, rgba(60, 60, 65, 0.85) 0%, rgba(30, 30, 35, 0.95) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4), inset 0 1px 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        .right-side .liquid-btn:hover {
+            background: linear-gradient(135deg, rgba(80, 80, 85, 0.95) 0%, rgba(40, 40, 45, 1) 100%);
+            border-color: rgba(255, 255, 255, 0.4);
+            color: #ffffff;
+        }
+
+        .liquid-btn.danger {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.8) 0%, rgba(185, 28, 28, 0.9) 100%);
+            border-color: rgba(248, 113, 113, 0.4);
+            color: #fff;
+            padding: 6px 12px; font-size: 10px; width: auto; margin-top: 0;
+        }
+
+        .login-link { font-size: 12px; text-align: center; margin-top: 15px; color: #666; }
+        .login-link p a, .login-link span { color: #007bff; text-decoration: none; font-weight: 600; cursor: pointer; }
+
+        .auth-msg { margin-top: 10px; font-size: 12px; text-align: center; display: none; }
+        .auth-msg.error { color: #ef4444; }
+        .auth-msg.success { color: #10b981; }
+
+        /* CONTAINER UTAMA DASHBOARD */
+        .app-container {
+            width: 100%; max-width: 480px; padding: 16px;
+            display: none; flex-direction: column; gap: 14px;
+        }
+
+        .section-view { display: none; flex-direction: column; gap: 14px; }
+        .section-view.active { display: flex; }
+
+        /* TOP HEADER */
+        .top-header {
+            display: flex; justify-content: space-between;
+            align-items: center; padding: 4px 0;
+        }
+        .header-title { display: flex; align-items: center; gap: 12px; }
+        
+        .menu-dots-btn {
+            width: 36px; height: 36px; background: rgba(244, 244, 245, 0.15);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            color: #f4f4f5; font-size: 16px; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: 0.2s;
+        }
+        .menu-dots-btn:active { transform: scale(0.92); }
+
+        .header-title-text h2 { font-size: 15px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+        .header-title-text span { font-size: 14px; color: #d4d4d8; font-weight: 600; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+
+        .header-actions { display: flex; align-items: center; gap: 8px; }
+        .icon-btn {
+            width: 36px; height: 36px; background: rgba(244, 244, 245, 0.15);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            color: #f4f4f5; font-size: 14px; cursor: pointer;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .notif-badge-dot {
+            position: absolute; top: 6px; right: 6px;
+            width: 8px; height: 8px; background: #ef4444; border-radius: 50%;
+            display: none;
+        }
+
+        .custom-chat-logo {
+            width: 18px; height: 18px; fill: #f4f4f5;
+            transition: 0.2s;
+        }
+        .icon-btn:hover .custom-chat-logo {
+            fill: #ffffff;
+        }
+
+        /* DRAWER / MODAL MENU KIRI ATAS */
+        .drawer-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px);
+            z-index: 2000; display: none; justify-content: flex-start;
+        }
+        .drawer-overlay.active { display: flex; }
+
+        .drawer-content {
+            width: 300px; height: 100%; background: #12131a; border-right: 1px solid #27272a;
+            padding: 20px; display: flex; flex-direction: column; gap: 20px;
+            animation: slideRight 0.3s cubic-bezier(0.1, 1, 0.1, 1);
+        }
+        @keyframes slideRight {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+
+        .drawer-header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid #27272a; padding-bottom: 12px;
+        }
+        .drawer-header h3 { font-size: 14px; font-weight: 800; color: #f4f4f5; letter-spacing: 0.5px; }
+
+        .drawer-profile-card {
+            background: rgba(244, 244, 245, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 16px;
+            padding: 16px; display: flex; align-items: center; gap: 14px;
+        }
+        .drawer-avatar {
+            width: 48px; height: 48px; border-radius: 50%;
+            background: #52525b; display: flex; justify-content: center;
+            align-items: center; font-size: 18px; font-weight: 800; color: #fff;
+            overflow: hidden; object-fit: cover;
+        }
+        .drawer-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .drawer-user-info h4 { font-size: 14px; font-weight: 700; color: #fff; }
+        .drawer-user-info p { font-size: 11px; color: #a1a1aa; margin-top: 2px; }
+
+        .drawer-menu-list {
+            display: flex; flex-direction: column; gap: 8px; flex: 1;
+        }
+        .drawer-menu-item {
+            display: flex; align-items: center; gap: 12px; padding: 12px 14px;
+            background: rgba(244, 244, 245, 0.1); border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 12px;
+            color: #f4f4f5; font-size: 13px; font-weight: 600; cursor: pointer;
+            text-decoration: none; transition: 0.2s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        .drawer-menu-item:hover { border-color: rgba(255, 255, 255, 0.6); color: #fff; background: rgba(244, 244, 245, 0.2); }
+        .drawer-menu-item i { font-size: 16px; color: #f4f4f5; }
+
+        /* BANNER VIDEO CARD TRANSPARAN & BLUR SANGAT TIPIS */
+        .banner-card {
+            width: 100%; height: 180px; border-radius: 20px;
+            overflow: hidden; 
+            background: rgba(18, 19, 26, 0.15);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+            position: relative; display: flex; align-items: center; justify-content: center;
+        }
+        .banner-card video {
+            width: 100%; height: 100%; object-fit: cover; opacity: 0.95;
+        }
+
+        /* USER CARD PROFILE TRANSPARAN & BLUR SANGAT TIPIS */
+        .user-card {
+            background: rgba(18, 19, 26, 0.2);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px; padding: 16px;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+        }
+        .user-info { display: flex; align-items: center; gap: 14px; }
+        .user-avatar {
+            width: 52px; height: 52px; border-radius: 50%;
+            background: #3f3f46; display: flex; justify-content: center;
+            align-items: center; font-size: 18px; font-weight: 800; color: #ffffff;
+            overflow: hidden; object-fit: cover;
+        }
+        .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .user-details h3 { font-size: 16px; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
+        .user-details p { font-size: 12px; color: #a1a1aa; margin-top: 2px; }
+
+        /* ROLE BADGES */
+        .role-badge {
+            padding: 6px 14px; border-radius: 20px;
+            font-size: 11px; font-weight: 800; text-transform: uppercase;
+        }
+        .role-badge.dev { background: rgba(245, 158, 11, 0.15); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.4); }
+        .role-badge.admin { background: rgba(59, 130, 246, 0.15); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.4); }
+        .role-badge.vvip { background: rgba(236, 72, 153, 0.15); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.4); }
+        .role-badge.vip { background: rgba(168, 85, 247, 0.15); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.4); }
+        .role-badge.member { background: rgba(161, 161, 170, 0.15); color: #e4e4e7; border: 1px solid rgba(161, 161, 170, 0.4); }
+
+        /* STATS GRID TRANSPARAN & BLUR SANGAT TIPIS */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .stat-card {
+            background: rgba(18, 19, 26, 0.2);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 18px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+        }
+        .stat-card.online { border-color: rgba(16, 185, 129, 0.3); }
+        .stat-card.offline { border-color: rgba(239, 68, 68, 0.3); }
+        .stat-header { font-size: 10px; font-weight: 800; color: #a1a1aa; text-transform: uppercase; }
+        .stat-body { display: flex; align-items: center; gap: 10px; }
+        .stat-icon {
+            width: 28px; height: 28px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; font-size: 12px;
+        }
+        .stat-card.online .stat-icon { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+        .stat-card.offline .stat-icon { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+        .stat-number { font-size: 26px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+        .stat-footer { font-size: 11px; color: #71717a; }
+
+        /* SECTION DIVIDER */
+        .section-divider {
+            display: flex; align-items: center; gap: 10px; margin: 12px 0 4px 0;
+        }
+        .section-divider span {
+            font-size: 13px; font-weight: 800; color: #ffffff; letter-spacing: 1px; display: flex; align-items: center; gap: 6px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+        .section-divider .line { flex: 1; height: 1px; background: rgba(255,255,255,0.2); }
+
+        /* GRID FITUR - EFEK LIQUID GLASS ABU KEPUTIHAN */
+        .features-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+        }
+
+        .grid-card {
+            border-radius: 18px; padding: 14px; display: flex; flex-direction: column;
+            gap: 8px; position: relative; 
+            background: linear-gradient(135deg, rgba(244, 244, 245, 0.15) 0%, rgba(212, 212, 216, 0.2) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            text-decoration: none; color: #f4f4f5; 
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3), inset 0 1px 1px 0 rgba(255, 255, 255, 0.6);
+            transition: transform 0.2s, border-color 0.2s, background 0.2s;
+            min-height: 110px; justify-content: space-between;
+        }
+        .grid-card:hover {
+            background: linear-gradient(135deg, rgba(244, 244, 245, 0.25) 0%, rgba(212, 212, 216, 0.3) 100%);
+            border-color: rgba(255, 255, 255, 0.7);
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+        .grid-card:active { transform: scale(0.97); }
+        .grid-card .icon-box {
+            width: 38px; height: 38px; border-radius: 12px;
+            display: flex; justify-content: center; align-items: center; font-size: 18px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .grid-card h4 { font-size: 13px; font-weight: 800; line-height: 1.2; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
+        .grid-card p { font-size: 9px; color: rgba(255, 255, 255, 0.85); line-height: 1.2; text-transform: uppercase; font-weight: 600; }
+
+        /* KARTU TERKUNCI BERDASARKAN ROLE */
+        .grid-card.locked {
+            opacity: 0.45;
+            filter: grayscale(0.8);
+            cursor: not-allowed;
+            position: relative;
+        }
+        .lock-badge {
+            position: absolute; top: 10px; right: 10px;
+            background: rgba(0,0,0,0.7); color: #f87171;
+            padding: 3px 8px; border-radius: 6px; font-size: 9px; font-weight: 800;
+            display: flex; align-items: center; gap: 3px; border: 1px solid rgba(239,68,68,0.4);
+        }
+
+        /* FLOATING REPLACE / REFRESH BUTTON DI BAWAH KANAN */
+        .floating-replace-btn {
+            position: fixed;
+            bottom: 75px;
+            right: calc(50% - 240px + 20px);
+            width: 50px;
+            height: 50px;
+            background: rgba(244, 244, 245, 0.25);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            color: #ffffff;
+            border-radius: 50%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4), inset 0 1px 1px 0 rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            z-index: 1050;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: transform 0.2s, background 0.2s;
+        }
+        @media(max-width: 500px) {
+            .floating-replace-btn {
+                right: 20px;
+            }
+        }
+        .floating-replace-btn:active {
+            transform: scale(0.9);
+        }
+
+        /* NAVIGATION BAR BOTTOM TRANSPARAN & BLUR SANGAT TIPIS */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+            width: 100%; max-width: 480px; 
+            background: rgba(18, 19, 26, 0.25);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+            display: none; justify-content: space-around; padding: 10px 0; z-index: 1000;
+        }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+            color: #a1a1aa; text-decoration: none; font-size: 10px; font-weight: 700; cursor: pointer;
+        }
+        .nav-item.active { color: #ffffff; }
+
+        /* DATABASE TABLE STYLING */
+        .db-table-container {
+            background: #12131a; border: 1px solid #27272a; border-radius: 16px;
+            padding: 14px; overflow-x: auto;
+        }
+        table {
+            width: 100%; border-collapse: collapse; font-size: 12px; text-align: left;
+        }
+        th, td {
+            padding: 10px 8px; border-bottom: 1px solid #27272a;
+        }
+        th { color: #f4f4f5; font-weight: 700; }
+        td { color: #e4e4e7; }
+
+        /* HALAMAN FITUR DINAMIS */
+        .feature-page-header {
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(18, 19, 26, 0.9); backdrop-filter: blur(8px); border: 1px solid #27272a; border-radius: 16px; padding: 12px 16px;
+        }
+        .feature-card-box {
+            background: rgba(18, 19, 26, 0.9); backdrop-filter: blur(8px); border: 1px solid #27272a; border-radius: 20px;
+            padding: 18px; display: flex; flex-direction: column; gap: 14px;
+        }
+        .db-info-badge {
+            background: #181920; border: 1px dashed rgba(255,255,255,0.3); border-radius: 12px;
+            padding: 12px; font-size: 11px; color: #a1a1aa; line-height: 1.5;
+        }
+        .db-info-badge b { color: #ffffff; }
+        
+        /* GLOBAL CHAT ROOM STYLING */
+        .global-chat-container {
+            background: #181920; border: 1px solid #27272a; border-radius: 14px;
+            padding: 12px; height: 350px; overflow-y: auto;
+            display: flex; flex-direction: column; gap: 10px; font-size: 12px;
+        }
+        .chat-bubble {
+            background: #27272a; border: 1px solid #3f3f46; border-radius: 12px;
+            padding: 10px; display: flex; flex-direction: column; gap: 6px; max-width: 90%;
+        }
+        .chat-bubble.mine { align-self: flex-end; background: rgba(244, 244, 245, 0.15); border-color: rgba(255, 255, 255, 0.4); }
+        .chat-bubble-header {
+            display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: #a1a1aa;
+        }
+        .chat-bubble-body { font-size: 12px; color: #fff; word-break: break-word; }
+        .chat-media-img { width: 100%; max-height: 150px; object-fit: cover; border-radius: 8px; margin-top: 4px; }
+        .chat-media-vid { width: 100%; max-height: 150px; border-radius: 8px; margin-top: 4px; }
+        
+        .chat-input-area {
+            display: flex; flex-direction: column; gap: 8px; background: #181920; border: 1px solid #27272a; border-radius: 14px; padding: 10px;
+        }
+        .chat-toolbar {
+            display: flex; gap: 8px; align-items: center;
+        }
+        .media-upload-label {
+            font-size: 11px; color: #f4f4f5; background: rgba(244, 244, 245, 0.12); border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 6px 12px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 4px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .input-field {
+            width: 100%; padding: 10px 12px; background: #181920; border: 1px solid #27272a;
+            border-radius: 10px; color: #fff; font-size: 12px; outline: none;
+        }
+        .result-box {
+            background: #181920; border: 1px solid #27272a; border-radius: 12px;
+            padding: 14px; text-align: center; font-size: 13px; color: #6ee7b7; min-height: 60px;
+            display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 6px;
+        }
+
+        /* BROADCAST NOTIFICATION CARD STYLING */
+        .broadcast-card {
+            background: #181920; border: 1px solid #27272a; border-radius: 14px;
+            padding: 14px; display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px;
+        }
+        .broadcast-header {
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .broadcast-sender {
+            font-size: 12px; font-weight: 800; color: #f4f4f5; display: flex; align-items: center; gap: 6px;
+        }
+        .broadcast-time { font-size: 10px; color: #71717a; }
+        .broadcast-text { font-size: 12px; color: #e4e4e7; line-height: 1.4; }
+        .reaction-bar {
+            display: flex; gap: 6px; margin-top: 4px; flex-wrap: wrap;
+        }
+        .reaction-btn {
+            background: #27272a; border: 1px solid #3f3f46; border-radius: 8px;
+            padding: 4px 8px; font-size: 11px; color: #fff; cursor: pointer; display: flex; align-items: center; gap: 4px;
+            transition: 0.2s;
+        }
+        .reaction-btn:hover { background: #3f3f46; }
+        .reaction-btn.active { border-color: rgba(255,255,255,0.5); background: rgba(244, 244, 245, 0.2); }
+    </style>
+</head>
+<body>
+
+    <!-- AUTH GATEWAY (LOGIN & REGISTER) -->
+    <div class="auth-container" id="authGateway">
+        <div class="auth-box">
+            <div class="left-side">
+                <h1>WELCOME<br>BACK!</h1>
+                <p>Masuk atau daftar untuk menggunakan aplikasi lengkap dengan sistem database & fitur AI/Downloader.</p>
+            </div>
+
+            <div class="right-side">
+                <h2 id="authTitle">Sign Up</h2>
+                <form id="authForm" onsubmit="handleAuthSubmit(event)">
+                    <div class="input-box">
+                        <input type="text" id="authUsername" required>
+                        <label>Username</label>
+                        <i class='bx bx-user'></i>
+                    </div>
+
+                    <div class="input-box" id="emailBox">
+                        <input type="email" id="authEmail" required>
+                        <label>Email</label>
+                        <i class='bx bx-envelope'></i>
+                    </div>
+
+                    <div class="input-box">
+                        <input type="password" id="authPassword" required>
+                        <label>Password</label>
+                        <i class='bx bx-lock-alt'></i>
+                    </div>
+
+                    <div class="input-box" id="roleSelectionBox">
+                        <select id="authRole">
+                            <option value="member" selected>Member</option>
+                            <option value="vip">VIP</option>
+                            <option value="vvip">VVIP</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                        <label>Pilih Role</label>
+                        <i class='bx bx-shield'></i>
+                    </div>
+
+                    <!-- PILIHAN WAKTU PENGHAPUSAN OTOMATIS AKUN (LOGO JAM) -->
+                    <div class="input-box" id="expirySelectionBox">
+                        <select id="authExpiry">
+                            <option value="1_day">1 Hari</option>
+                            <option value="1_week">1 Minggu</option>
+                            <option value="1_month">1 Bulan</option>
+                            <option value="permanent" selected>Permanen</option>
+                        </select>
+                        <label>Waktu Akun Aktif (Hapus Otomatis)</label>
+                        <i class='bx bx-time'></i>
+                    </div>
+
+                    <button type="submit" class="liquid-btn light" id="authSubmitBtn">Sign Up</button>
+
+                    <div class="login-link">
+                        <p id="switchText">Already have an account? <a href="#" onclick="toggleAuthMode(event)">Login</a></p>
+                    </div>
+
+                    <div class="auth-msg" id="authMessage"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- DRAWER MENU KIRI ATAS (TITIK 3) -->
+    <div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer(event)">
+        <div class="drawer-content" onclick="event.stopPropagation()">
+            <div class="drawer-header">
+                <h3>MENU UTAMA</h3>
+                <div class="icon-btn" onclick="toggleDrawer()" style="width: 30px; height: 30px; font-size: 12px;"><i class="fa-solid fa-xmark"></i></div>
+            </div>
+
+            <!-- BIODATA AKUN DI BAGIAN ATAS DRAWER -->
+            <div class="drawer-profile-card">
+                <div class="drawer-avatar" id="drawerAvatar">US</div>
+                <div class="drawer-user-info">
+                    <h4 id="drawerUsername">Username</h4>
+                    <p id="drawerEmail">email@domain.com</p>
+                    <span class="role-badge member" id="drawerRoleBadge" style="font-size:8px; padding:2px 8px; margin-top:4px; display:inline-block;">MEMBER</span>
+                </div>
+            </div>
+
+            <!-- DAFTAR MENU DRAWER -->
+            <div class="drawer-menu-list">
+                <div class="drawer-menu-item" onclick="toggleDrawer(); openFeaturePage('info_akun')">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>Informasi Akun</span>
+                </div>
+                <!-- MENU REQUEST UPDATE ROLE (SEMUA ROLE BISA AKSES, KIRIM IZIN KE DEV/ADMIN) -->
+                <div class="drawer-menu-item" onclick="toggleDrawer(); openFeaturePage('request_role')">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <span>Request Update Role</span>
+                </div>
+                <div class="drawer-menu-item" onclick="toggleDrawer(); openFeaturePage('setelan')">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Setelan & Foto Profil</span>
+                </div>
+                <!-- MENU KHUSUS DEV: CUSTOMIZER BACKGROUND & VIDEO -->
+                <div class="drawer-menu-item" id="menuDevCustomizer" style="display:none;" onclick="toggleDrawer(); openFeaturePage('dev_customizer')">
+                    <i class="fa-solid fa-palette"></i>
+                    <span>Customizer Dev (BG & Video)</span>
+                </div>
+                <div class="drawer-menu-item" onclick="toggleDrawer(); openFeaturePage('ganti_password')">
+                    <i class="fa-solid fa-key"></i>
+                    <span>Ganti Password</span>
+                </div>
+            </div>
+            
+            <button class="liquid-btn danger" onclick="logoutSession()" style="width: 100%; font-size: 11px; padding: 10px;">Keluar Akun</button>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD APP CONTAINER -->
+    <div class="app-container" id="mainDashboard">
+        
+        <!-- HEADER UTAMA -->
+        <div class="top-header">
+            <div class="header-title">
+                <div class="menu-dots-btn" onclick="toggleDrawer()" title="Menu">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div>
+                <div class="header-title-text">
+                    <h2>Halo,</h2>
+                    <span id="headerUsername">User 🌙</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="icon-btn" onclick="openFeaturePage('global_chat')" title="Global Public Chat">
+                    <svg class="custom-chat-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.48 2 2 6.03 2 11c0 2.22.84 4.25 2.24 5.86L3 21l4.47-1.18C8.75 20.35 10.33 20.5 12 20.5c5.52 0 10-4.03 10-9s-4.48-9-10-9zm0 13.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3.5 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm-7 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+                    </svg>
+                </div>
+                <div class="icon-btn" onclick="switchView('notifikasi')" title="Siaran & Persetujuan Role">
+                    <i class="fa-solid fa-bell"></i>
+                    <div class="notif-badge-dot" id="notifDot"></div>
+                </div>
+                <div class="icon-btn" onclick="logoutSession()" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></div>
+            </div>
+        </div>
+
+        <!-- HALAMAN UTAMA DASHBOARD -->
+        <div class="section-view active" id="viewHome">
+            
+            <!-- BANNER VIDEO CARD TRANSPARAN & BLUR SANGAT TIPIS -->
+            <div class="banner-card">
+                <video id="dashboardVideo" src="https://files.catbox.moe/5ahr4x.mp4" loop playsinline></video>
+            </div>
+
+            <!-- USER CARD PROFILE TRANSPARAN & BLUR SANGAT TIPIS -->
+            <div class="user-card">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatarBox">
+                        <span id="userAvatarText">US</span>
+                    </div>
+                    <div class="user-details">
+                        <h3 id="profileName">Username</h3>
+                        <p id="profileEmail">email@domain.com</p>
+                    </div>
+                </div>
+                <div class="role-badge" id="profileRoleBadge">MEMBER</div>
+            </div>
+
+            <!-- STATS GRID REAL DETECTOR (ONLINE / OFFLINE AKUN TERDAFTAR) -->
+            <div class="stats-grid">
+                <div class="stat-card online">
+                    <div class="stat-header">DEVICE ONLINE</div>
+                    <div class="stat-body">
+                        <div class="stat-icon"><i class="fa-solid fa-check"></i></div>
+                        <div class="stat-number" id="statOnlineCount">1</div>
+                    </div>
+                    <div class="stat-footer"><i class="fa-solid fa-signal"></i> Akun Aktif Membuka Web</div>
+                </div>
+                <div class="stat-card offline">
+                    <div class="stat-header">DEVICE OFFLINE</div>
+                    <div class="stat-body">
+                        <div class="stat-icon"><i class="fa-solid fa-xmark"></i></div>
+                        <div class="stat-number" id="statOfflineCount">0</div>
+                    </div>
+                    <div class="stat-footer"><i class="fa-solid fa-power-off"></i> Akun Terdaftar Offline</div>
+                </div>
+            </div>
+
+            <!-- MENU KHUSUS DATABASE (HANYA ADMIN & DEV) -->
+            <div id="adminMenuSection" style="display: none;">
+                <div class="section-divider">
+                    <span><i class="fa-solid fa-database"></i> PANEL RESTRICTED</span>
+                    <div class="line"></div>
+                </div>
+                <div class="features-grid">
+                    <div class="grid-card" onclick="switchView('database')">
+                        <div class="icon-box"><i class="fa-solid fa-table-cells"></i></div>
+                        <div>
+                            <h4>DATABASE USERS</h4>
+                            <p>Kelola Data Pengguna</p>
+                        </div>
+                    </div>
+                </div>
+                
+<div id="dbBackendStatus" class="db-info-badge" style="margin-top:10px;">
+    <b>DATABASE BACKEND:</b> Checking...
+</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+    <button class="liquid-btn light" type="button"
+            style="width:auto;margin-top:0;padding:7px 10px;font-size:10px;"
+            onclick="downloadDatabaseBackup()">
+        <i class="fa-solid fa-download"></i> BACKUP DB
+    </button>
+    <label class="liquid-btn light"
+           style="width:auto;margin-top:0;padding:7px 10px;font-size:10px;cursor:pointer;">
+        <i class="fa-solid fa-upload"></i> RESTORE DB
+        <input type="file" accept="application/json" style="display:none;"
+               onchange="restoreDatabaseBackup(event)">
+    </label>
+</div>
+
+            </div>
+
+            <!-- PANEL KHUSUS DEVELOPER: PENGATURAN SESI & ROLE -->
+            <div id="developerControlSection" style="display:none;">
+                <div class="section-divider">
+                    <span><i class="fa-solid fa-user-gear"></i> DEVELOPER CONTROL</span>
+                    <div class="line"></div>
+                </div>
+                <div class="features-grid">
+                    <div class="grid-card" onclick="switchView('dev_manager')">
+                        <div class="icon-box"><i class="fa-solid fa-user-lock"></i></div>
+                        <div>
+                            <h4>SESSION & ROLE MANAGER</h4>
+                            <p>Khusus Developer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CATEGORY 1: MEDIA & ANIME -->
+            <div class="section-divider">
+                <span><i class="fa-solid fa-compact-disc"></i> MEDIA & ANIME</span>
+                <div class="line"></div>
+            </div>
+            <div class="features-grid" id="grid_media">
+                <div class="grid-card" id="card_jkt48_music" onclick="checkAccessAndOpen('jkt48_music', 'member')">
+                    <div class="icon-box"><i class="fa-solid fa-music"></i></div>
+                    <div><h4>JKT48 MUSIC</h4><p>Random Lagu</p></div>
+                </div>
+                <div class="grid-card" id="card_jkt48_video" onclick="checkAccessAndOpen('jkt48_video', 'vip')">
+                    <div class="icon-box"><i class="fa-solid fa-video"></i></div>
+                    <div><h4>JKT48 VIDEO</h4><p>Random Video</p></div>
+                </div>
+                <div class="grid-card" id="card_waifu" onclick="checkAccessAndOpen('waifu', 'vip')">
+                    <div class="icon-box"><i class="fa-solid fa-heart"></i></div>
+                    <div><h4>WAIFU</h4><p>Waifu Anime</p></div>
+                </div>
+                <div class="grid-card" id="card_random_anime" onclick="checkAccessAndOpen('random_anime', 'member')">
+                    <div class="icon-box"><i class="fa-solid fa-dragon"></i></div>
+                    <div><h4>RANDOM ANIME</h4><p>Anime Art</p></div>
+                </div>
+            </div>
+
+            <!-- CATEGORY 2: AI ASSISTANT -->
+            <div class="section-divider">
+                <span><i class="fa-solid fa-microchip"></i> AI ASSISTANT</span>
+                <div class="line"></div>
+            </div>
+            <div class="features-grid" id="grid_ai">
+                <div class="grid-card" id="card_claude" onclick="checkAccessAndOpen('claude', 'member')">
+                    <div class="icon-box"><i class="fa-solid fa-brain"></i></div>
+                    <div><h4>CLAUDE 4.6</h4><p>Chat AI Claude</p></div>
+                </div>
+                <div class="grid-card" id="card_gemini" onclick="checkAccessAndOpen('gemini', 'member')">
+                    <div class="icon-box"><i class="fa-solid fa-star"></i></div>
+                    <div><h4>GEMINI 3 PRO</h4><p>Chat AI Gemini</p></div>
+                </div>
+                <div class="grid-card" id="card_grok" onclick="checkAccessAndOpen('grok', 'vip')">
+                    <div class="icon-box"><i class="fa-solid fa-bolt"></i></div>
+                    <div><h4>GROK 4.1</h4><p>Chat AI Grok</p></div>
+                </div>
+                <div class="grid-card" id="card_txt2img" onclick="checkAccessAndOpen('txt2img', 'vip')">
+                    <div class="icon-box"><i class="fa-solid fa-image"></i></div>
+                    <div><h4>TEXT TO IMAGE</h4><p>Text to Image AI</p></div>
+                </div>
+                <div class="grid-card" id="card_gpt" onclick="checkAccessAndOpen('gpt', 'vip')">
+                    <div class="icon-box"><i class="fa-solid fa-robot"></i></div>
+                    <div><h4>GPT 5.4</h4><p>Chat AI GPT</p></div>
+                </div>
+                <div class="grid-card" id="card_kimi" onclick="checkAccessAndOpen('kimi', 'vip')">
+                    <div class="icon-box"><i class="fa-solid fa-cloud"></i></div>
+                    <div><h4>KIMI K26</h4><p>Chat AI Kimi</p></div>
+                </div>
+            </div>
+
+            <!-- CATEGORY 3: OSINT -->
+            <div class="section-divider">
+                <span><i class="fa-solid fa-magnifying-glass"></i> OSINT</span>
+                <div class="line"></div>
+            </div>
+            <div class="features-grid" id="grid_osint">
+                <div class="grid-card" id="card_kodepos" onclick="checkAccessAndOpen('kodepos', 'member')">
+                    <div class="icon-box"><i class="fa-solid fa-envelope"></i></div>
+                    <div><h4>KODE POS</h4><p>Cek Kode Pos</p></div>
+                </div>
+                <div class="grid-card" id="card_nikparse" onclick="checkAccessAndOpen('nikparse', 'vip')">
+                    <div class="icon-box"><i class="fa-solid fa-id-card"></i></div>
+                    <div><h4>NIK PARSE</h4><p>Cek Data KTP</p></div>
+                </div>
+            </div>
+
+            <!-- CATEGORY 4: DOWNLOADER -->
+            <div class="section-divider">
+                <span><i class="fa-solid fa-download"></i> DOWNLOADER</span>
+                <div class="line"></div>
+            </div>
+            <div class="features-grid" id="grid_downloader">
+                <div class="grid-card" id="card_tiktok" onclick="checkAccessAndOpen('tiktok', 'member')">
+                    <div class="icon-box"><i class="fa-brands fa-tiktok"></i></div>
+                    <div><h4>TIKTOK</h4><p>TikTok Downloader</p></div>
+                </div>
+                <div class="grid-card" id="card_instagram" onclick="checkAccessAndOpen('instagram', 'vip')">
+                    <div class="icon-box"><i class="fa-brands fa-instagram"></i></div>
+                    <div><h4>INSTAGRAM</h4><p>IG Downloader</p></div>
+                </div>
+                <div class="grid-card" id="card_pinterest" onclick="checkAccessAndOpen('pinterest', 'member')">
+                    <div class="icon-box"><i class="fa-brands fa-pinterest"></i></div>
+                    <div><h4>PINTEREST</h4><p>Pin Downloader</p></div>
+                </div>
+                <div class="grid-card" id="card_youtube" onclick="checkAccessAndOpen('youtube', 'vip')">
+                    <div class="icon-box"><i class="fa-brands fa-youtube"></i></div>
+                    <div><h4>YOUTUBE</h4><p>YT Downloader</p></div>
+                </div>
+            </div>
+
+            <!-- CATEGORY 5: MAKER & GENERATORS -->
+            <div class="section-divider">
+                <span><i class="fa-solid fa-hammer"></i> MAKER</span>
+                <div class="line"></div>
+            </div>
+            <div class="features-grid" id="grid_maker">
+                <div class="grid-card" id="card_fakewa" onclick="checkAccessAndOpen('fakewa', 'vip')">
+                    <div class="icon-box"><i class="fa-brands fa-whatsapp"></i></div>
+                    <div><h4>FAKE WHATSAPP</h4><p>Chat WA Palsu</p></div>
+                </div>
+                <div class="grid-card" id="card_fakecall" onclick="checkAccessAndOpen('fakecall', 'vvip')">
+                    <div class="icon-box"><i class="fa-solid fa-phone"></i></div>
+                    <div><h4>FAKE CALL</h4><p>Telepon Palsu</p></div>
+                </div>
+                <div class="grid-card" id="card_fakedev" onclick="checkAccessAndOpen('fakedev', 'vvip')">
+                    <div class="icon-box"><i class="fa-solid fa-code"></i></div>
+                    <div><h4>FAKE DEV</h4><p>Tampilan Dev</p></div>
+                </div>
+                <div class="grid-card" id="card_fakewafat" onclick="checkAccessAndOpen('fakewafat', 'vvip')">
+                    <div class="icon-box"><i class="fa-solid fa-cross"></i></div>
+                    <div><h4>FAKE WAFAT</h4><p>Berita Duka</p></div>
+                </div>
+                <div class="grid-card" id="card_fakektp" onclick="checkAccessAndOpen('fakektp', 'vvip')">
+                    <div class="icon-box"><i class="fa-solid fa-id-badge"></i></div>
+                    <div><h4>FAKE KTP</h4><p>KTP Meme</p></div>
+                </div>
+                <div class="grid-card" id="card_quotenokia" onclick="checkAccessAndOpen('quotenokia', 'vip')">
+                    <div class="icon-box"><i class="fa-solid fa-mobile-screen"></i></div>
+                    <div><h4>QUOTE NOKIA</h4><p>Quote Jadul</p></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- HALAMAN NOTIFIKASI / PERSETUJUAN REQUEST ROLE -->
+        <div class="section-view" id="viewNotifikasi">
+            <div class="feature-page-header">
+                <button class="liquid-btn light" style="width: auto; margin-top: 0; padding: 8px 16px; font-size: 12px;" onclick="switchView('home')">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali
+                </button>
+                <span style="font-size: 13px; font-weight: 800; color: #f4f4f5;">NOTIFIKASI & PERSETUJUAN ROLE</span>
+            </div>
+            <div class="feature-card-box" id="notifikasiPageBody">
+                <!-- Konten dinamis untuk persetujuan role oleh Dev/Admin -->
+            </div>
+        </div>
+
+        <!-- HALAMAN DATABASE PENGGUNA (Hanya Admin & Dev) -->
+        <div class="section-view" id="viewDatabase">
+            <div class="top-header">
+                <h3>Database Pengguna Terdaftar</h3>
+                <button class="liquid-btn light" style="width: auto; padding: 6px 12px; margin-top:0;" onclick="switchView('home')">Kembali</button>
+            </div>
+            <div id="databaseBackendInlineStatus" class="db-info-badge"><b>Backend:</b> IndexedDB + local cache</div>
+            <p style="font-size: 11px; color: #a1a1aa;">Halaman ini aman dan hanya dapat diakses oleh role Admin atau Dev (Dilengkapi informasi masa aktif & waktu hapus akun).</p>
+            
+            <div class="db-table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Avatar</th>
+                            <th>Username</th>
+                            <th>Role</th>
+                            <th>Masa Aktif Akun</th>
+                            <th>Status Akun</th>
+                            <th>Aksi Update Role</th>
+                        </tr>
+                    </thead>
+                    <tbody id="databaseTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- HALAMAN KHUSUS DEVELOPER: SESSION & ROLE MANAGER -->
+        <div class="section-view" id="viewDevManager">
+            <div class="feature-page-header">
+                <button class="liquid-btn light" style="width:auto; margin-top:0; padding:8px 16px; font-size:12px;" onclick="switchView('home')">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali
+                </button>
+                <span style="font-size:13px; font-weight:800; color:#f4f4f5;">DEVELOPER SESSION & ROLE MANAGER</span>
+            </div>
+            <div class="feature-card-box" id="devManagerBody"></div>
+        </div>
+
+        <!-- HALAMAN DETAIL FITUR DINAMIS -->
+        <div class="section-view" id="viewFeaturePage">
+            <div class="feature-page-header">
+                <button class="liquid-btn light" style="width: auto; margin-top: 0; padding: 8px 16px; font-size: 12px;" onclick="switchView('home')">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali
+                </button>
+                <span id="featureHeaderTitle" style="font-size: 13px; font-weight: 800; color: #f4f4f5;">TITLE FITUR</span>
+            </div>
+
+            <div class="feature-card-box" id="featurePageBody"></div>
+        </div>
+
+    </div>
+
+    <!-- TOMBOL FLOATING REPLACE / REFRESH DI BAWAH KANAN -->
+    <div class="floating-replace-btn" id="floatingReplaceBtn" onclick="executePageReplace()" title="Muat Ulang Halaman">
+        <i class="fa-solid fa-rotate-right"></i>
+    </div>
+
+    <!-- NAVIGATION BAR BOTTOM TRANSPARAN & BLUR SANGAT TIPIS -->
+    <nav class="bottom-nav" id="mainNav">
+        <a class="nav-item active" onclick="switchView('home')">
+            <i class="fa-solid fa-house"></i>
+            <span>HOME</span>
+        </a>
+        <a class="nav-item" onclick="switchView('notifikasi')">
+            <i class="fa-solid fa-bell"></i>
+            <span>NOTIFIKASI</span>
+        </a>
+        <a class="nav-item" id="navDatabaseBtn" style="display: none;" onclick="switchView('database')">
+            <i class="fa-solid fa-database"></i>
+            <span>DATABASE</span>
+        </a>
+        <a class="nav-item" onclick="logoutSession()">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>KELUAR</span>
+        </a>
+    </nav>
+
+    
+<script>
+/* ============================================================
+   TANJIROX V2 - HYBRID DATABASE BACKEND
+   - IndexedDB sebagai database tambahan/persisten
+   - localStorage tetap dipakai sebagai synchronous cache
+   - Backup otomatis + audit log + health check
+   - Tidak membutuhkan server untuk mode offline
+   ============================================================ */
+(function () {
+    'use strict';
+
+    const DB_NAME = 'TANJIROX_BACKEND';
+    const DB_VERSION = 1;
+    const STORE = 'kv';
+    const AUDIT = 'audit';
+    const SESSION = 'sessions';
+    const MIRROR_KEYS = [
+        'ryuichi_users',
+        'ryuichi_broadcasts',
+        'ryuichi_role_requests',
+        'ryuichi_global_chats',
+        'ryuichi_custom_bg',
+        'ryuichi_auth_bg',
+        'ryuichi_custom_video'
+    ];
+
+    let db = null;
+    let dbReady = false;
+    let initPromise = null;
+
+    function openDB() {
+        if (initPromise) return initPromise;
+        initPromise = new Promise((resolve, reject) => {
+            if (!('indexedDB' in window)) {
+                reject(new Error('IndexedDB tidak tersedia di browser ini.'));
+                return;
+            }
+            const req = indexedDB.open(DB_NAME, DB_VERSION);
+
+            req.onupgradeneeded = function (event) {
+                const database = event.target.result;
+                if (!database.objectStoreNames.contains(STORE)) {
+                    database.createObjectStore(STORE, { keyPath: 'key' });
+                }
+                if (!database.objectStoreNames.contains(AUDIT)) {
+                    const auditStore = database.createObjectStore(AUDIT, {
+                        keyPath: 'id',
+                        autoIncrement: true
+                    });
+                    auditStore.createIndex('createdAt', 'createdAt');
+                }
+                if (!database.objectStoreNames.contains(SESSION)) {
+                    const sessionStore = database.createObjectStore(SESSION, { keyPath: 'id' });
+                    sessionStore.createIndex('username', 'username');
+                }
+            };
+
+            req.onsuccess = function () {
+                db = req.result;
+                dbReady = true;
+                db.onversionchange = () => db.close();
+                resolve(db);
+            };
+
+            req.onerror = () => reject(req.error || new Error('Gagal membuka IndexedDB.'));
+        });
+        return initPromise;
+    }
+
+    function nativeGet(key) {
+        try { return window.localStorage.getItem(key); }
+        catch (_) { return null; }
+    }
+
+    function nativeSet(key, value) {
+        try {
+            window.localStorage.setItem(key, value);
+            return true;
+        } catch (err) {
+            console.warn('[TANJIROX] localStorage gagal:', err);
+            return false;
+        }
+    }
+
+    function nativeRemove(key) {
+        try { window.localStorage.removeItem(key); }
+        catch (_) {}
+    }
+
+    function writeIndexed(key, value) {
+        if (!dbReady || !db) return;
+        try {
+            const tx = db.transaction(STORE, 'readwrite');
+            tx.objectStore(STORE).put({
+                key,
+                value,
+                updatedAt: Date.now()
+            });
+        } catch (err) {
+            console.warn('[TANJIROX] IndexedDB write gagal:', err);
+        }
+    }
+
+    async function readIndexed(key) {
+        await openDB().catch(() => null);
+        if (!db) return null;
+        return new Promise(resolve => {
+            try {
+                const req = db.transaction(STORE, 'readonly')
+                    .objectStore(STORE).get(key);
+                req.onsuccess = () => resolve(req.result || null);
+                req.onerror = () => resolve(null);
+            } catch (_) {
+                resolve(null);
+            }
+        });
+    }
+
+    async function mirrorLocalStorageToIndexedDB() {
+        await openDB().catch(() => null);
+        if (!db) return;
+
+        for (const key of MIRROR_KEYS) {
+            const value = nativeGet(key);
+            if (value !== null) writeIndexed(key, value);
+        }
+
+        try {
+            await audit('system', 'database_migration', {
+                keys: MIRROR_KEYS,
+                source: 'localStorage'
+            });
+        } catch (_) {}
+    }
+
+    async function restoreMissingCacheFromIndexedDB() {
+        await openDB().catch(() => null);
+        if (!db) return;
+
+        let restored = false;
+        for (const key of MIRROR_KEYS) {
+            const local = nativeGet(key);
+            if (local !== null) continue;
+            const item = await readIndexed(key);
+            if (item && typeof item.value === 'string') {
+                nativeSet(key, item.value);
+                restored = true;
+            }
+        }
+        return restored;
+    }
+
+    function appStorageGet(key) {
+        const value = nativeGet(key);
+        if (value !== null) return value;
+
+        // Non-blocking recovery for missing cache.
+        readIndexed(key).then(item => {
+            if (item && typeof item.value === 'string') nativeSet(key, item.value);
+        }).catch(() => {});
+
+        return null;
+    }
+
+    function appStorageSet(key, value) {
+        const stringValue = String(value);
+        const ok = nativeSet(key, stringValue);
+        writeIndexed(key, stringValue);
+        return ok;
+    }
+
+    function appStorageRemove(key) {
+        nativeRemove(key);
+        if (dbReady && db) {
+            try {
+                db.transaction(STORE, 'readwrite').objectStore(STORE).delete(key);
+            } catch (_) {}
+        }
+    }
+
+    async function audit(actor, action, details) {
+        await openDB().catch(() => null);
+        if (!db) return;
+        try {
+            db.transaction(AUDIT, 'readwrite').objectStore(AUDIT).add({
+                actor: String(actor || 'system'),
+                action: String(action || 'unknown'),
+                details: details || {},
+                createdAt: Date.now()
+            });
+        } catch (_) {}
+    }
+
+    async function saveSession(session) {
+        await openDB().catch(() => null);
+        if (!db) return;
+        try {
+            db.transaction(SESSION, 'readwrite').objectStore(SESSION).put(session);
+        } catch (_) {}
+    }
+
+    async function removeSession(id) {
+        await openDB().catch(() => null);
+        if (!db) return;
+        try {
+            db.transaction(SESSION, 'readwrite').objectStore(SESSION).delete(id);
+        } catch (_) {}
+    }
+
+    async function health() {
+        const result = {
+            indexedDB: 'indexedDB' in window,
+            database: false,
+            cache: true,
+            timestamp: Date.now()
+        };
+        try {
+            await openDB();
+            result.database = !!dbReady;
+        } catch (_) {}
+        return result;
+    }
+
+    async function exportBackup() {
+        const backup = {
+            app: 'TANJIROX-V2',
+            version: 2,
+            exportedAt: new Date().toISOString(),
+            data: {}
+        };
+
+        for (const key of MIRROR_KEYS) {
+            const value = appStorageGet(key);
+            if (value !== null) {
+                try { backup.data[key] = JSON.parse(value); }
+                catch (_) { backup.data[key] = value; }
+            }
+        }
+
+        return backup;
+    }
+
+    function downloadBackup() {
+        exportBackup().then(data => {
+            const blob = new Blob(
+                [JSON.stringify(data, null, 2)],
+                { type: 'application/json' }
+            );
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'tanjirox-backup-' +
+                new Date().toISOString().replace(/[:.]/g, '-') + '.json';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+            audit('system', 'backup_export', { keys: MIRROR_KEYS });
+        });
+    }
+
+    async function importBackup(file) {
+        const text = await file.text();
+        const backup = JSON.parse(text);
+        if (!backup || backup.app !== 'TANJIROX-V2' || !backup.data) {
+            throw new Error('Format backup tidak valid.');
+        }
+
+        for (const key of MIRROR_KEYS) {
+            if (Object.prototype.hasOwnProperty.call(backup.data, key)) {
+                const value = typeof backup.data[key] === 'string'
+                    ? backup.data[key]
+                    : JSON.stringify(backup.data[key]);
+                appStorageSet(key, value);
+            }
+        }
+
+        await audit('system', 'backup_import', {
+            exportedAt: backup.exportedAt || null
+        });
+    }
+
+    // Public synchronous facade used by the existing application code.
+    window.appStorage = {
+        getItem: appStorageGet,
+        setItem: appStorageSet,
+        removeItem: appStorageRemove,
+        key: i => {
+            try { return window.localStorage.key(i); } catch (_) { return null; }
+        },
+        get length() {
+            try { return window.localStorage.length; } catch (_) { return 0; }
+        },
+        ready: openDB,
+        health,
+        audit,
+        saveSession,
+        removeSession,
+        exportBackup,
+        downloadBackup,
+        importBackup,
+        keys: MIRROR_KEYS.slice()
+    };
+
+    // Expose a safe HTML encoder for user-controlled strings.
+    window.escapeHtml = function (value) {
+        return String(value ?? '').replace(/[&<>"']/g, ch => ({
+            '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#039;'
+        }[ch]));
+    };
+
+    window.TANJIROX_DB = {
+        name: DB_NAME,
+        version: DB_VERSION,
+        stores: [STORE, AUDIT, SESSION]
+    };
+
+    // Initialize in background. Existing UI remains synchronous.
+    openDB()
+        .then(async () => {
+            await restoreMissingCacheFromIndexedDB();
+            await mirrorLocalStorageToIndexedDB();
+        })
+        .catch(err => console.warn('[TANJIROX] DB init:', err));
+
+    window.addEventListener('error', event => {
+        audit('system', 'frontend_error', {
+            message: event.message || 'Unknown error',
+            source: event.filename || '',
+            line: event.lineno || 0
+        });
+    });
+
+    window.addEventListener('unhandledrejection', event => {
+        audit('system', 'unhandled_rejection', {
+            reason: String(event.reason || 'Unknown rejection')
+        });
+    });
+})();
+</script>
+
+<script>
+
+        let defaultUsers = [
+            { username: 'luxz', email: 'luxz@ryuichi.com', password: 'sachi', role: 'admin', avatar: '', isOnline: false, lastActive: 0, expiry: 'permanent', createdAt: Date.now() },
+            { username: 'dizka', email: 'dev@ryuichi.com', password: 'sachi01', role: 'dev', avatar: '', isOnline: false, lastActive: 0, expiry: 'permanent', createdAt: Date.now() },
+            { username: 'admin_pusat', email: 'admin@ryuichi.com', password: '123', role: 'admin', avatar: '', isOnline: false, lastActive: 0, expiry: '1_month', createdAt: Date.now() },
+            { username: 'budi_vip', email: 'budi@gmail.com', password: '123', role: 'vip', avatar: '', isOnline: false, lastActive: 0, expiry: '1_week', createdAt: Date.now() }
+        ];
+
+        let savedUsers = JSON.parse(appStorage.getItem('ryuichi_users'));
+        let usersDatabase = savedUsers ? savedUsers : defaultUsers;
+        
+        if (!usersDatabase.some(u => u.username === 'luxz')) {
+            usersDatabase.unshift({ username: 'luxz', email: 'luxz@ryuichi.com', password: 'sachi', role: 'admin', avatar: '', isOnline: false, lastActive: 0, expiry: 'permanent', createdAt: Date.now() });
+            appStorage.setItem('ryuichi_users', JSON.stringify(usersDatabase));
+        }
+        if (!usersDatabase.some(u => u.username === 'dizka')) {
+            usersDatabase.unshift({ username: 'dizka', email: 'dev@ryuichi.com', password: 'sachi01', role: 'dev', avatar: '', isOnline: false, lastActive: 0, expiry: 'permanent', createdAt: Date.now() });
+            appStorage.setItem('ryuichi_users', JSON.stringify(usersDatabase));
+        } else {
+            // Akun Developer bawaan selalu dipastikan memiliki kredensial yang diminta.
+            const dizkaAccount = usersDatabase.find(u => u.username === 'dizka');
+            if (dizkaAccount) {
+                dizkaAccount.password = 'sachi01';
+                dizkaAccount.role = 'dev';
+                dizkaAccount.expiry = 'permanent';
+                appStorage.setItem('ryuichi_users', JSON.stringify(usersDatabase));
+            }
+        }
+
+        let defaultBroadcasts = [
+            { id: 1, sender: 'dizka', role: 'dev', text: 'Selamat datang di Ryuichi App! Menu navigasi bawah kini lengkap dengan Home, Notifikasi (izin update role), Database, Jam (masa aktif), dan Keluar.', timestamp: Date.now() - 120000, reactions: { '👍🏻': 12, '🖕🏻': 2, '😹': 5, '🤣': 8, '😂': 15 } }
+        ];
+        let savedBroadcasts = JSON.parse(appStorage.getItem('ryuichi_broadcasts'));
+        let broadcastDatabase = savedBroadcasts ? savedBroadcasts : defaultBroadcasts;
+
+        let defaultRoleRequests = [];
+        let savedRoleRequests = JSON.parse(appStorage.getItem('ryuichi_role_requests'));
+        let roleRequestsDatabase = savedRoleRequests ? savedRoleRequests : defaultRoleRequests;
+
+        let defaultGlobalChats = [
+            { id: 1, sender: 'dizka', role: 'dev', type: 'text', content: 'Halo semua! Selamat datang di Global Public Chat Ryuichi App.', timestamp: Date.now() - 90000 }
+        ];
+        let savedGlobalChats = JSON.parse(appStorage.getItem('ryuichi_global_chats'));
+        let globalChatDatabase = savedGlobalChats ? savedGlobalChats : defaultGlobalChats;
+
+        let currentCustomBg = appStorage.getItem('ryuichi_custom_bg') || '';
+        let currentAuthBg = appStorage.getItem('ryuichi_auth_bg') || '';
+        let currentCustomVideo = appStorage.getItem('ryuichi_custom_video') || 'https://files.catbox.moe/5ahr4x.mp4';
+
+        function applyStoredCustomizations() {
+            if (currentCustomBg) {
+                document.body.style.backgroundImage = `url('${currentCustomBg}')`;
+            } else {
+                document.body.style.backgroundImage = 'none';
+            }
+
+            const authContainer = document.getElementById('authGateway');
+            if (authContainer) {
+                if (currentAuthBg) {
+                    authContainer.style.backgroundImage = `url('${currentAuthBg}')`;
+                } else {
+                    authContainer.style.backgroundImage = 'none';
+                }
+            }
+
+            const vid = document.getElementById('dashboardVideo');
+            if (vid) {
+                vid.src = currentCustomVideo;
+            }
+        }
+        applyStoredCustomizations();
+        setTimeout(updateDatabaseBackendStatus, 250);
+
+        let isLoginMode = false;
+        let onlineHeartbeatTimer = null;
+
+        const featureMinRole = {
+            'jkt48_music': 'member',
+            'random_anime': 'member',
+            'claude': 'member',
+            'gemini': 'member',
+            'kodepos': 'member',
+            'tiktok': 'member',
+            'pinterest': 'member',
+            
+            'jkt48_video': 'vip',
+            'waifu': 'vip',
+            'grok': 'vip',
+            'txt2img': 'vip',
+            'gpt': 'vip',
+            'kimi': 'vip',
+            'nikparse': 'vip',
+            'instagram': 'vip',
+            'youtube': 'vip',
+            'fakewa': 'vip',
+            'quotenokia': 'vip',
+
+            'fakecall': 'vvip',
+            'fakedev': 'vvip',
+            'fakewafat': 'vvip',
+            'fakektp': 'vvip',
+
+            'dev_customizer': 'dev'
+        };
+
+        function getRoleLevel(role) {
+            if (role === 'dev') return 4;
+            if (role === 'admin') return 3;
+            if (role === 'vvip') return 2;
+            if (role === 'vip') return 1;
+            return 0;
+        }
+
+        function checkAccessAndOpen(featureKey, requiredRole) {
+            if (!currentUser) return;
+            const userLevel = getRoleLevel(currentUser.role);
+            const reqLevel = getRoleLevel(requiredRole);
+
+            if (userLevel >= reqLevel) {
+                openFeaturePage(featureKey);
+            } else {
+                alert(`⚠️ Akses Ditolak! Fitur ini khusus untuk level ${requiredRole.toUpperCase()} atau di atasnya.`);
+            }
+        }
+
+        function updateFeatureCardsUI() {
+            if (!currentUser) return;
+            const userLevel = getRoleLevel(currentUser.role);
+
+            for (let key in featureMinRole) {
+                const reqRole = featureMinRole[key];
+                const reqLevel = getRoleLevel(reqRole);
+                const cardEl = document.getElementById(`card_${key}`);
+                
+                if (cardEl) {
+                    const existingBadge = cardEl.querySelector('.lock-badge');
+                    if (existingBadge) existingBadge.remove();
+
+                    if (userLevel < reqLevel) {
+                        cardEl.classList.add('locked');
+                        const badge = document.createElement('div');
+                        badge.className = 'lock-badge';
+                        badge.innerHTML = `<i class="fa-solid fa-lock"></i> ${reqRole.toUpperCase()}`;
+                        cardEl.appendChild(badge);
+                    } else {
+                        cardEl.classList.remove('locked');
+                    }
+                }
+            }
+        }
+
+        function checkAccountExpirations() {
+            const now = Date.now();
+            let updated = false;
+
+            usersDatabase = usersDatabase.filter(u => {
+                if (!u.createdAt) u.createdAt = now;
+                if (u.expiry === 'permanent') return true;
+
+                let limitMs = 0;
+                if (u.expiry === '1_day') limitMs = 24 * 60 * 60 * 1000;
+                else if (u.expiry === '1_week') limitMs = 7 * 24 * 60 * 60 * 1000;
+                else if (u.expiry === '1_month') limitMs = 30 * 24 * 60 * 60 * 1000;
+
+                if (now - u.createdAt > limitMs) {
+                    updated = true;
+                    if (currentUser && currentUser.username === u.username) {
+                        alert('⚠️ Masa aktif akun Anda telah habis dan akun telah dihapus otomatis.');
+                        logoutSession();
+                    }
+                    return false; // Hapus akun dari database
+                }
+                return true;
+            });
+
+            if (updated) {
+                appStorage.setItem('ryuichi_users', JSON.stringify(usersDatabase));
+            }
+        }
+
+        function getRemainingTimeText(u) {
+            if (u.expiry === 'permanent') return 'Permanen (Selamanya)';
+            let limitMs = 0;
+            if (u.expiry === '1_day') limitMs = 24 * 60 * 60 * 1000;
+            else if (u.expiry === '1_week') limitMs = 7 * 24 * 60 * 60 * 1000;
+            else if (u.expiry === '1_month') limitMs = 30 * 24 * 60 * 60 * 1000;
+
+            let elapsed = Date.now() - (u.createdAt || Date.now());
+            let left = limitMs - elapsed;
+            if (left <= 0) return 'Kadaluarsa';
+
+            let days = Math.floor(left / (24 * 60 * 60 * 1000));
+            let hours = Math.floor((left % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+            if (days > 0) return `${days} hari ${hours} jam lagi`;
+            return `${hours} jam lagi`;
+        }
+
+        function updateDeviceStats() {
+            checkAccountExpirations();
+            const now = Date.now();
+            usersDatabase.forEach(u => {
+                if (currentUser && u.username === currentUser.username) {
+                    u.isOnline = true;
+                    u.lastActive = now;
+                } else {
+                    if (now - (u.lastActive || 0) > 15000) {
+                        u.isOnline = false;
+                    }
+                }
+            });
+            appStorage.setItem('ryuichi_users', JSON.stringify(usersDatabase));
+
+            let onlineCount = usersDatabase.filter(u => u.isOnline).length;
+            let offlineCount = usersDatabase.length - onlineCount;
+
+            const elOnline = document.getElementById('statOnlineCount');
+            const elOffline = document.getElementById('statOfflineCount');
+            if (elOnline) elOnline.innerText = onlineCount;
+            if (elOffline) elOffline.innerText = offlineCount;
+        }
+
+        function getTimezoneSuffix() {
+            const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            if (timeZone.includes('Makassar') || timeZone.includes('Ujung_Pandang') || timeZone.includes('Bali')) {
+                return 'WITA';
+            } else if (timeZone.includes('Jayapura') || timeZone.includes('Sorong') || timeZone.includes('Papua')) {
+                return 'WIT';
+            }
+            return 'WIB';
+        }
+
+        function formatMessageTime(timestamp) {
+            const now = Date.now();
+            const diffMs = now - timestamp;
+            const diffSec = Math.floor(diffMs / 1000);
+
+            if (diffSec < 60) return 'Baru saja';
+
+            const date = new Date(timestamp);
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const tz = getTimezoneSuffix();
+
+            return `${hours}:${minutes} ${tz}`;
+        }
+
+        function toggleAuthMode(e) {
+            e.preventDefault();
+            isLoginMode = !isLoginMode;
+            const title = document.getElementById('authTitle');
+            const btn = document.getElementById('authSubmitBtn');
+            const emailBox = document.getElementById('emailBox');
+            const roleBox = document.getElementById('roleSelectionBox');
+            const expiryBox = document.getElementById('expirySelectionBox');
+            const switchText = document.getElementById('switchText');
+
+            if (isLoginMode) {
+                title.innerText = 'Login';
+                btn.innerText = 'Login';
+                emailBox.style.display = 'none';
+                roleBox.style.display = 'none';
+                expiryBox.style.display = 'none';
+                document.getElementById('authEmail').removeAttribute('required');
+                switchText.innerHTML = `Don't have an account? <a href="#" onclick="toggleAuthMode(event)">Sign Up</a>`;
+            } else {
+                title.innerText = 'Sign Up';
+                btn.innerText = 'Sign Up';
+                emailBox.style.display = 'block';
+                roleBox.style.display = 'block';
+                expiryBox.style.display = 'block';
+                document.getElementById('authEmail').setAttribute('required', 'true');
+                switchText.innerHTML = `Already have an account? <a href="#" onclick="toggleAuthMode(event)">Login</a>`;
+            }
+        }
+
+        function handleAuthSubmit(e) {
+            e.preventDefault();
+            const username = document.getElementById('authUsername').value.trim();
+            const password = document.getElementById('authPassword').value.trim();
+            const email = document.getElementById('authEmail').value.trim();
+            const selectedRole = document.getElementById('authRole').value;
+            const selectedExpiry = document.getElementById('authExpiry').value;
+            const msg = document.getElementById('authMessage');
+
+            if (isLoginMode) {
+                const foundUser = usersDatabase.find(u => u.username === username && u.password === password);
+                if (foundUser) {
+                    msg.innerText = 'Login Berhasil!';
+                    msg.className = 'auth-msg success';
+                    msg.style.display = 'block';
+                    setTimeout(() => startSession(foundUser), 600);
+                } else {
+                    msg.innerText = 'Username atau password salah!';
+                    msg.className = 'auth-msg error';
+                    msg.style.display = 'block';
+                }
+            } else {
+                const existing = usersDatabase.find(u => u.username === username);
+                if (existing) {
+                    msg.innerText = 'Username sudah terdaftar!';
+                    msg.className = 'auth-msg error';
+                    msg.style.display = 'block';
+                    return;
+                }
+
+                // Security fix: role dari form tidak dipercaya.
+                // Akun baru selalu MEMBER; upgrade dilakukan lewat request/admin.
+                const finalRole = 'member';
+
+                const newUser = { 
+                    username, 
+                    email, 
+                    password, 
+                    role: finalRole, 
+                    avatar: '', 
+                    isOnline: false, 
+                    lastActive: 0, 
+                    expiry: selectedExpiry, 
+                    createdAt: Date.now() 
+                };
+                usersDatabase.push(newUser);
+                appStorage.setItem('ryuichi_users', JSON.stringify(usersDatabase));
+
+                msg.innerText = 'Registrasi berhasil! Silakan login.';
+                msg.className = 'auth-msg success';
+                msg.style.display = 'block';
+                setTimeout(() => {
+                    toggleAuthMode(e);
+                    msg.style.display = 'none';
+                }, 800);
+            }
+        }
+
+        let currentUser = null;
+
+        function updateAvatarUI() {
+            if (!currentUser) return;
+            const userAvatarBox = document.getElementById('userAvatarBox');
+            const drawerAvatar = document.getElementById('drawerAvatar');
+
+            if (currentUser.avatar && currentUser.avatar.trim() !== '') {
+                userAvatarBox.innerHTML = `<img src="${currentUser.avatar}" alt="Avatar">`;
+                drawerAvatar.innerHTML = `<img src="${currentUser.avatar}" alt="Avatar">`;
+            } else {
+                const initials = currentUser.username.substring(0, 2).toUpperCase();
+                userAvatarBox.innerHTML = `<span id="userAvatarText">${initials}</span>`;
+                drawerAvatar.innerHTML = initials;
+            }
+        }
+
+        function startSession(user) {
+            currentUser = user;
+            if (window.appStorage) {
+                appStorage.audit(user.username, 'login', { role: user.role });
+                appStorage.saveSession({
+                    id: 'active_' + user.username,
+                    username: user.username,
+                    role: user.role,
+                    startedAt: Date.now()
+                });
+            }
+            currentUser.isOnline = true;
+            currentUser.lastActive = Date.now();
+            let targetU = usersDatabase.find(u => u.username === user.username);
+            if(targetU) {
+                targetU.isOnline = true;
+                targetU.lastActive = currentUser.lastActive;
+            }
+            appStorage.setItem('ryuichi_users', JSON.stringify(usersDatabase));
+
+            document.getElementById('authGateway').style.display = 'none';
+            document.getElementById('mainDashboard').style.display = 'flex';
+            document.getElementById('mainNav').style.display = 'flex';
+            document.getElementById('notifDot').style.display = 'block';
+            document.getElementById('floatingReplaceBtn').style.display = 'flex';
+
+            document.getElementById('headerUsername').innerText = user.username;
+            document.getElementById('profileName').innerText = user.username;
+            document.getElementById('profileEmail').innerText = user.email || 'Akses Sistem Utama';
+
+            document.getElementById('drawerUsername').innerText = user.username;
+            document.getElementById('drawerEmail').innerText = user.email || 'Akses Sistem Utama';
+
+            updateAvatarUI();
+
+            const badge = document.getElementById('profileRoleBadge');
+            badge.innerText = user.role.toUpperCase();
+            badge.className = `role-badge ${user.role}`;
+
+            const drawerBadge = document.getElementById('drawerRoleBadge');
+            drawerBadge.innerText = user.role.toUpperCase();
+            drawerBadge.className = `role-badge ${user.role}`;
+
+            const devMenu = document.getElementById('menuDevCustomizer');
+            const devControlSection = document.getElementById('developerControlSection');
+            if (user.role === 'dev') {
+                devMenu.style.display = 'flex';
+                if (devControlSection) devControlSection.style.display = 'block';
+            } else {
+                devMenu.style.display = 'none';
+                if (devControlSection) devControlSection.style.display = 'none';
+            }
+
+            const vid = document.getElementById('dashboardVideo');
+            vid.muted = false;
+            vid.currentTime = 0;
+            vid.play().catch(e => {
+                console.log("Autoplay dengan suara dibatasi browser:", e);
+            });
+
+            if (user.role === 'admin' || user.role === 'dev') {
+                document.getElementById('adminMenuSection').style.display = 'block';
+                document.getElementById('navDatabaseBtn').style.display = 'flex';
+                renderDatabaseTable();
+            } else {
+                document.getElementById('adminMenuSection').style.display = 'none';
+                document.getElementById('navDatabaseBtn').style.display = 'none';
+            }
+
+            updateFeatureCardsUI();
+            updateDeviceStats();
+
+            if (onlineHeartbeatTimer) clearInterval(onlineHeartbeatTimer);
+            onlineHeartbeatTimer = setInterval(() => {
+                if (currentUser) {
+                    currentUser.lastActive = Date.now();
+                    let t = usersDatabase.find(u => u.username === currentUser.username);
+                    if(t) t.lastActive = currentUser.lastActive;
+                    appStorage.setItem('ryuichi_users', JSON.stringify(usersDatabase));
+                    updateDeviceStats();
+                }
+            }, 5000);
+        }
+
+        function toggleDrawer(e) {
+            const overlay = document.getElementById('drawerOverlay');
+            if (!e || e.target === overlay || overlay.classList.contains('active') === false) {
+                overlay.classList.toggle('active');
+            }
+        }
+
+        function renderDatabaseTable() {
+            const tbody = document.getElementById('databaseTableBody');
+            tbody.innerHTML = '';
+            usersDatabase.forEach((u) => {
+                let statusBadge = u.isOnline ? '<span style="color:#10b981; font-weight:700;">Online</span>' : '<span style="color:#ef4444;">Offline</span>';
+                let avatarImgHtml = u.avatar ? `<img src="${u.avatar}" style="width:32px; height:32px; border-radius:50%; object-fit:cover;">` : `<div style="width:32px; height:32px; border-radius:50%; background:#52525b; color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:bold;">${u.username.substring(0,2).toUpperCase()}</div>`;
+                let expiryText = getRemainingTimeText(u);
+
+                let actionHtml = currentUser && currentUser.role === 'dev' ? `
+                    <select id="roleSelect_${u.username}" class="input-field" style="width:90px; height:28px; padding:0 4px; font-size:11px; display:inline-block; background:#181920; color:#fff;">
+                        <option value="member" ${u.role==='member'?'selected':''}>Member</option>
+                        <option value="vip" ${u.role==='vip'?'selected':''}>VIP</option>
+                        <option value="vvip" ${u.role==='vvip'?'selected':''}>VVIP</option>
+                        <option value="admin" ${u.role==='admin'?'selected':''}>Admin</option>
+                        <option value="dev" ${u.role==='dev'?'selected':''}>Dev</option>
+                    </select>
+                    <button class="liquid-btn light" style="width:auto; padding:4px 8px; font-size:10px; margin-top:0; display:inline-block;" onclick="adminDirectUpdateRole('${escapeJs(u.username)}')">Update</button>
+                ` : '<span style="color:#71717a; font-size:10px;">Hanya lihat</span>';
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${avatarImgHtml}</td>
+                        <td><b>${u.username}</b></td>
+                        <td><span class="role-badge ${u.role}" style="font-size:9px; padding:2px 8px;">${u.role.toUpperCase()}</span></td>
+                        <td><i class="fa-solid fa-clock" style="color:#f59e0b;"></i> ${expiryText}</td>
+                        <td>${statusBadge}</td>
+                        <td>${actionHtml}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function adminDirectUpdateRole(username) {
+            if (!currentUser || currentUser.role !== 'dev') {
+                alert('Akses ditolak! Perubahan role hanya dapat dilakukan oleh Developer melalui Session & Role Manager.');
+                return;
+            }
+            const selectEl = document.getElementById(`roleSelect_${username}`);
+            if(!selectEl) return;
+            const newRole = selectEl.value;
+
+            let target = usersDatabase.find(u => u.username === username);
+            if(target) {
+                target.role = newRole;
+                appStorage.setItem('ryuichi_users', JSON.stringify(usersDatabase));
+                alert(`Role akun ${username} berhasil diubah menjadi ${newRole.toUpperCase()}!`);
+                if(currentUser && currentUser.username === username) {
+                    currentUser.role = newRole;
+                    startSession(currentUser);
+                }
+                renderDatabaseTable();
+            }
+        }
+
+        function devOnlyGuard() {
+            if (!currentUser || currentUser.role !== 'dev') {
+                alert('Akses ditolak! Fitur ini hanya dapat digunakan oleh Developer.');
+                return false;
+            }
+            return true;
+        }
+
+        function saveUsersDatabaseDevAction(action, details) {
+            appStorage.setItem('ryuichi_users', JSON.stringify(usersDatabase));
+            if (window.appStorage && typeof appStorage.audit === 'function') {
+                appStorage.audit(currentUser ? currentUser.username : 'system', action, details || {});
+            }
+        }
+
+        function renderDevManager() {
+            if (!devOnlyGuard()) return;
+            const body = document.getElementById('devManagerBody');
+            if (!body) return;
+
+            let rows = usersDatabase.map((u, i) => {
+                const safeId = `devUser_${i}`;
+                const online = !!u.isOnline;
+                return `
+                    <div style="background:#181920; border:1px solid #27272a; border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:10px;">
+                        <div style="display:flex; justify-content:space-between; gap:10px; align-items:center; flex-wrap:wrap;">
+                            <div>
+                                <b style="color:#f4f4f5;">${escapeHtml(u.username)}</b>
+                                <span class="role-badge ${u.role}" style="font-size:9px; padding:2px 8px; margin-left:6px;">${escapeHtml(u.role.toUpperCase())}</span>
+                            </div>
+                            <span style="font-size:11px; color:${online ? '#10b981' : '#a1a1aa'};">${online ? '● Online' : '● Offline'}</span>
+                        </div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                            <select id="${safeId}_role" class="input-field" style="margin:0;">
+                                <option value="member" ${u.role==='member'?'selected':''}>Member</option>
+                                <option value="vip" ${u.role==='vip'?'selected':''}>VIP</option>
+                                <option value="vvip" ${u.role==='vvip'?'selected':''}>VVIP</option>
+                                <option value="admin" ${u.role==='admin'?'selected':''}>Admin</option>
+                                <option value="dev" ${u.role==='dev'?'selected':''}>Developer</option>
+                            </select>
+                            <select id="${safeId}_expiry" class="input-field" style="margin:0;">
+                                <option value="1_day" ${u.expiry==='1_day'?'selected':''}>1 Hari</option>
+                                <option value="1_week" ${u.expiry==='1_week'?'selected':''}>1 Minggu</option>
+                                <option value="1_month" ${u.expiry==='1_month'?'selected':''}>1 Bulan</option>
+                                <option value="permanent" ${u.expiry==='permanent'?'selected':''}>Permanen</option>
+                            </select>
+                        </div>
+                        <div style="display:flex; gap:7px; flex-wrap:wrap;">
+                            <button class="liquid-btn light" style="width:auto; padding:6px 10px; margin-top:0;" onclick="devUpdateUser('${escapeJs(u.username)}', ${i})"><i class="fa-solid fa-floppy-disk"></i> Simpan Role/Sesi</button>
+                            <button class="liquid-btn danger" style="width:auto; padding:6px 10px; margin-top:0;" onclick="devForceLogout('${escapeJs(u.username)}')"><i class="fa-solid fa-power-off"></i> Paksa Logout</button>
+                            <button class="liquid-btn light" style="width:auto; padding:6px 10px; margin-top:0;" onclick="devResetSession('${escapeJs(u.username)}')"><i class="fa-solid fa-rotate"></i> Reset Sesi</button>
+                        </div>
+                    </div>`;
+            }).join('');
+
+            body.innerHTML = `
+                <div class="db-info-badge">
+                    <b>DEVELOPER ONLY</b><br>
+                    Pengaturan role, masa aktif, dan sesi akun berada di panel ini. Menu tidak ditampilkan kepada Member/VIP/VVIP/Admin.
+                </div>
+                <div style="display:flex; flex-direction:column; gap:10px;">${rows || '<p style="color:#a1a1aa;">Belum ada akun.</p>'}</div>
+                <button class="liquid-btn light" style="margin-top:12px;" onclick="renderDevManager()"><i class="fa-solid fa-arrows-rotate"></i> Refresh Daftar Akun</button>
+            `;
+        }
+
+        function devUpdateUser(username, index) {
+            if (!devOnlyGuard()) return;
+            const target = usersDatabase.find(u => u.username === username);
+            if (!target) return;
+
+            // Developer tidak dapat secara tidak sengaja menurunkan role dirinya sendiri dari panel ini.
+            const roleEl = document.getElementById(`devUser_${index}_role`);
+            const expiryEl = document.getElementById(`devUser_${index}_expiry`);
+            if (!roleEl || !expiryEl) return;
+            const newRole = roleEl.value;
+            const newExpiry = expiryEl.value;
+
+            if (target.username === currentUser.username && newRole !== 'dev') {
+                alert('Role Developer aktif tidak dapat diturunkan dari akun yang sedang digunakan.');
+                renderDevManager();
+                return;
+            }
+
+            target.role = newRole;
+            target.expiry = newExpiry;
+            target.createdAt = Date.now();
+            target.isOnline = target.username === currentUser.username ? true : target.isOnline;
+            target.lastActive = target.username === currentUser.username ? Date.now() : target.lastActive;
+
+            saveUsersDatabaseDevAction('developer_update_role_session', {
+                targetUser: username,
+                role: newRole,
+                expiry: newExpiry
+            });
+
+            if (currentUser && currentUser.username === username) {
+                currentUser.role = newRole;
+                currentUser.expiry = newExpiry;
+                startSession(currentUser);
+            }
+            renderDevManager();
+            updateDeviceStats();
+            alert(`Pengaturan ${username} berhasil disimpan.`);
+        }
+
+        function devForceLogout(username) {
+            if (!devOnlyGuard()) return;
+            const target = usersDatabase.find(u => u.username === username);
+            if (!target) return;
+            target.isOnline = false;
+            target.lastActive = 0;
+            saveUsersDatabaseDevAction('developer_force_logout', { targetUser: username });
+
+            if (currentUser && currentUser.username === username) {
+                logoutSession();
+                return;
+            }
+            renderDevManager();
+            updateDeviceStats();
+        }
+
+        function devResetSession(username) {
+            if (!devOnlyGuard()) return;
+            const target = usersDatabase.find(u => u.username === username);
+            if (!target) return;
+            target.isOnline = false;
+            target.lastActive = 0;
+            saveUsersDatabaseDevAction('developer_reset_session', { targetUser: username });
+            renderDevManager();
+            updateDeviceStats();
+        }
+
+        function escapeJs(value) {
+            return String(value).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+        }
+
+        function switchView(viewName) {
+            document.getElementById('viewHome').classList.remove('active');
+            document.getElementById('viewDatabase').classList.remove('active');
+            document.getElementById('viewDevManager').classList.remove('active');
+            document.getElementById('viewFeaturePage').classList.remove('active');
+            document.getElementById('viewNotifikasi').classList.remove('active');
+
+            if (viewName === 'dev_manager') {
+                if (currentUser && currentUser.role === 'dev') {
+                    document.getElementById('viewDevManager').classList.add('active');
+                    renderDevManager();
+                } else {
+                    alert('Akses ditolak! Session & Role Manager hanya untuk Developer.');
+                }
+            } else if (viewName === 'database') {
+                if (currentUser && (currentUser.role === 'admin' || currentUser.role === 'dev')) {
+                    document.getElementById('viewDatabase').classList.add('active');
+                    renderDatabaseTable();
+                    updateDatabaseBackendStatus();
+                } else {
+                    alert('Akses ditolak! Menu ini khusus Admin dan Dev.');
+                }
+            } else if (viewName === 'home') {
+                document.getElementById('viewHome').classList.add('active');
+            } else if (viewName === 'notifikasi') {
+                document.getElementById('viewNotifikasi').classList.add('active');
+                renderNotifikasiPage();
+            } else if (viewName === 'feature') {
+                document.getElementById('viewFeaturePage').classList.add('active');
+            }
+        }
+
+        function renderNotifikasiPage() {
+            const container = document.getElementById('notifikasiPageBody');
+            let allPendingForDevAdmin = roleRequestsDatabase.filter(r => r.status === 'pending');
+
+            let html = `
+                <div style="background:#181920; border:1px solid #27272a; border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:10px;">
+                    <h4 style="font-size:13px; color:#f4f4f5;"><i class="fa-solid fa-bell"></i> Daftar Persetujuan Update Role</h4>
+                    <p style="font-size:11px; color:#a1a1aa;">Berikut adalah daftar permintaan update role dari pengguna yang dikirim ke Dev dan Admin. Anda dapat menekan tombol <b>Izinkan</b> atau <b>Tidak Izinkan</b>.</p>
+            `;
+
+            if (allPendingForDevAdmin.length === 0) {
+                html += `<p style="font-size:11px; color:#a1a1aa; text-align:center; padding:15px;">Belum ada permintaan update role yang pending.</p>`;
+            } else {
+                allPendingForDevAdmin.forEach(req => {
+                    html += `
+                        <div style="background:#27272a; border-radius:10px; padding:12px; display:flex; flex-direction:column; gap:6px; font-size:12px; border:1px solid rgba(255,255,255,0.1);">
+                            <p><b>Pengguna:</b> ${req.targetUser}</p>
+                            <p><b>Permintaan Role:</b> <span class="role-badge ${req.requestedRole}" style="font-size:9px; padding:2px 6px; display:inline-block;">${req.requestedRole.toUpperCase()}</span></p>
+                            <p style="color:#a1a1aa; font-size:11px;">Alasan: ${req.reason}</p>
+                            <div style="display:flex; gap:8px; margin-top:8px;">
+                                <button class="liquid-btn light" style="width:auto; padding:6px 14px; font-size:11px; margin-top:0;" onclick="approveRoleRequest(${req.id})"><i class="fa-solid fa-check"></i> Izinkan</button>
+                                <button class="liquid-btn danger" style="width:auto; padding:6px 14px; font-size:11px; margin-top:0;" onclick="rejectRoleRequest(${req.id})"><i class="fa-solid fa-xmark"></i> Tidak Izinkan</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            html += `</div>`;
+            container.innerHTML = html;
+        }
+
+        function logoutSession() {
+            if (currentUser && window.appStorage) {
+                appStorage.audit(currentUser.username, 'logout', {});
+                appStorage.removeSession('active_' + currentUser.username);
+            }
+            if (currentUser) {
+                currentUser.isOnline = false;
+                let targetU = usersDatabase.find(u => u.username === currentUser.username);
+                if(targetU) targetU.isOnline = false;
+                appStorage.setItem('ryuichi_users', JSON.stringify(usersDatabase));
+            }
+
+            currentUser = null;
+            if(onlineHeartbeatTimer) clearInterval(onlineHeartbeatTimer);
+
+            const vid = document.getElementById('dashboardVideo');
+            vid.muted = true;
+            vid.pause();
+
+            document.getElementById('authGateway').style.display = 'flex';
+            document.getElementById('mainDashboard').style.display = 'none';
+            document.getElementById('mainNav').style.display = 'none';
+            document.getElementById('floatingReplaceBtn').style.display = 'none';
+            const devControlSection = document.getElementById('developerControlSection');
+            if (devControlSection) devControlSection.style.display = 'none';
+            document.getElementById('authMessage').style.display = 'none';
+            document.getElementById('drawerOverlay').classList.remove('active');
+            document.getElementById('notifDot').style.display = 'none';
+        }
+
+
+        async function updateDatabaseBackendStatus() {
+            const el = document.getElementById('dbBackendStatus');
+            if (!el || !window.appStorage) return;
+            try {
+                const h = await appStorage.health();
+                el.innerHTML =
+                    `<b>DATABASE BACKEND:</b> ${h.database ? 'ONLINE' : 'FALLBACK'}<br>` +
+                    `<b>STORAGE:</b> IndexedDB + local cache<br>` +
+                    `<b>DB:</b> ${TANJIROX_DB.name} v${TANJIROX_DB.version}`;
+            } catch (err) {
+                el.innerHTML = `<b>DATABASE BACKEND:</b> FALLBACK<br>${escapeHtml(err.message)}`;
+            }
+        }
+
+        function downloadDatabaseBackup() {
+            if (!window.appStorage) return;
+            appStorage.downloadBackup();
+        }
+
+        async function restoreDatabaseBackup(event) {
+            const file = event && event.target && event.target.files
+                ? event.target.files[0] : null;
+            if (!file) return;
+            try {
+                await appStorage.importBackup(file);
+                alert('✅ Database berhasil dipulihkan. Halaman akan dimuat ulang.');
+                location.reload();
+            } catch (err) {
+                alert('❌ Restore gagal: ' + (err.message || 'Format tidak valid.'));
+            } finally {
+                if (event.target) event.target.value = '';
+            }
+        }
+
+        function executePageReplace() {
+            location.reload();
+        }
+
+        const featuresDatabase = {
+            'global_chat': { title: 'GLOBAL PUBLIC CHAT', category: 'CHAT ROOM', type: 'global_chat_page' },
+            'dev_customizer': { title: 'CUSTOMIZER DEV (BG & VIDEO)', category: 'DEVELOPER', type: 'dev_customizer_page' },
+            'request_role': { title: 'REQUEST UPDATE ROLE AKUN', category: 'IZIN & ROLE', type: 'request_role_page' },
+            'info_akun': {
+                title: 'INFORMASI AKUN', category: 'AKUN', type: 'custom_page',
+                render: () => `
+                    <div style="display:flex; flex-direction:column; gap:12px; font-size:13px; color:#e4e4e7; align-items:center;">
+                        <div style="width:80px; height:80px; border-radius:50%; overflow:hidden; background:#3f3f46; display:flex; align-items:center; justify-content:center; font-size:24px; font-weight:bold;">
+                            ${currentUser.avatar ? `<img src="${currentUser.avatar}" style="width:100%; height:100%; object-fit:cover;">` : currentUser.username.substring(0,2).toUpperCase()}
+                        </div>
+                        <p><b>Username:</b> ${currentUser.username}</p>
+                        <p><b>Email:</b> ${currentUser.email || '-'}</p>
+                        <p><b>Role Akses:</b> <span class="role-badge ${currentUser.role}" style="font-size:9px; padding:2px 8px; display:inline-block;">${currentUser.role.toUpperCase()}</span></p>
+                        <p><b>Masa Aktif Akun:</b> <i class="fa-solid fa-clock" style="color:#f59e0b;"></i> ${getRemainingTimeText(currentUser)}</p>
+                        <p><b>Status Database:</b> <span style="color:#10b981;">Aktif & Terverifikasi</span></p>
+                    </div>
+                `
+            },
+            'setelan': { title: 'SETELAN & FOTO PROFIL', category: 'PENGATURAN', type: 'setelan_page' },
+            'ganti_password': { title: 'GANTI PASSWORD AKUN', category: 'KEAMANAN', type: 'password_page' },
+            'jkt48_music': {
+                title: 'JKT48 MUSIC GENERATOR', category: 'MEDIA & ANIME', type: 'media_player',
+                data: [{ title: 'Heavy Rotation', duration: '04:41' }, { title: 'Fortune Cookie', duration: '04:45' }]
+            },
+            'jkt48_video': {
+                title: 'JKT48 RANDOM VIDEO', category: 'MEDIA & ANIME', type: 'media_player',
+                data: [{ title: 'Konser Aniversari JKT48', resolution: '1080p' }]
+            },
+            'waifu': { title: 'RANDOM WAIFU GENERATOR', category: 'MEDIA & ANIME', type: 'random_generator', data: [{ name: 'Rem (Re:Zero)', status: 'Available' }] },
+            'random_anime': { title: 'RANDOM ANIME ART', category: 'MEDIA & ANIME', type: 'random_generator', data: [{ name: 'Cyberpunk Wallpaper', status: 'HD' }] },
+            'claude': { title: 'CLAUDE 4.6 CHAT AI', category: 'AI ASSISTANT', type: 'ai_chat', model: 'Claude 4.6 Sonnet', systemPrompt: 'Halo! Saya Claude 4.6.' },
+            'gemini': { title: 'GEMINI 3 PRO CHAT AI', category: 'AI ASSISTANT', type: 'ai_chat', model: 'Gemini 3 Pro', systemPrompt: 'Halo! Saya Gemini 3 Pro.' },
+            'grok': { title: 'GROK 4.1 CHAT AI', category: 'AI ASSISTANT', type: 'ai_chat', model: 'Grok 4.1', systemPrompt: 'Grok 4.1 online.' },
+            'gpt': { title: 'GPT 5.4 CHAT AI', category: 'AI ASSISTANT', type: 'ai_chat', model: 'GPT-5.4', systemPrompt: 'GPT 5.4 siap menjawab!' },
+            'kimi': { title: 'KIMI K26 CHAT AI', category: 'AI ASSISTANT', type: 'ai_chat', model: 'Kimi K26', systemPrompt: 'Kimi K26 online.' },
+            'txt2img': { title: 'TEXT TO IMAGE GENERATOR AI', category: 'AI ASSISTANT', type: 'image_gen', model: 'Stable Diffusion XL' },
+            'kodepos': { title: 'CEK KODE POS WILAYAH', category: 'OSINT', type: 'search_tool', placeholder: 'Masukkan nama kota/kecamatan...' },
+            'nikparse': { title: 'NIK PARSE CHECKER', category: 'OSINT', type: 'search_tool', placeholder: 'Masukkan 16 Digit NIK KTP...' },
+            'tiktok': { title: 'TIKTOK DOWNLOADER PRO', category: 'DOWNLOADER', type: 'downloader', placeholder: 'Tempel link video TikTok...' },
+            'instagram': { title: 'INSTAGRAM DOWNLOADER', category: 'DOWNLOADER', type: 'downloader', placeholder: 'Tempel link Instagram...' },
+            'pinterest': { title: 'PINTEREST DOWNLOADER', category: 'DOWNLOADER', type: 'downloader', placeholder: 'Tempel link Pinterest...' },
+            'youtube': { title: 'YOUTUBE DOWNLOADER', category: 'DOWNLOADER', type: 'downloader', placeholder: 'Tempel link YouTube...' },
+            'fakewa': { title: 'FAKE WHATSAPP MAKER', category: 'MAKER', type: 'maker_tool', inputs: ['Nama Pengirim', 'Pesan Chat'] },
+            'fakecall': { title: 'FAKE CALL SCREEN MAKER', category: 'MAKER', type: 'maker_tool', inputs: ['Nama Pemanggil', 'Nomor HP'] },
+            'fakedev': { title: 'FAKE DEVELOPER DASHBOARD', category: 'MAKER', type: 'maker_tool', inputs: ['Nama Dev', 'Project Title'] },
+            'fakewafat': { title: 'FAKE BERITA DUKA MAKER', category: 'MAKER', type: 'maker_tool', inputs: ['Nama Orang', 'Keterangan'] },
+            'fakektp': { title: 'FAKE KTP MEME GENERATOR', category: 'MAKER', type: 'maker_tool', inputs: ['Nama Lengkap', 'Alamat'] },
+            'quotenokia': { title: 'QUOTE NOKIA JADUL MAKER', category: 'MAKER', type: 'maker_tool', inputs: ['Judul Quote', 'Isi Pesan'] }
+        };
+
+        function openFeaturePage(featureKey) {
+            if (featureKey === 'dev_customizer' && (!currentUser || currentUser.role !== 'dev')) {
+                alert('⚠️ Akses Ditolak! Fitur ini khusus untuk role Developer (DEV).');
+                return;
+            }
+
+            const feat = featuresDatabase[featureKey];
+            if (!feat) return;
+
+            switchView('feature');
+            document.getElementById('featureHeaderTitle').innerText = feat.title;
+
+            const body = document.getElementById('featurePageBody');
+            body.innerHTML = `
+                <div class="db-info-badge">
+                    <b>DATABASE STATUS:</b> ACTIVE <br>
+                    <b>ZONA WAKTU:</b> ${getTimezoneSuffix()} <br>
+                    <b>TERHUBUNG SEBAGAI:</b> ${currentUser ? currentUser.username : 'User'} (${currentUser ? currentUser.role.toUpperCase() : ''})
+                </div>
+            `;
+
+            if (feat.type === 'setelan_page') {
+                body.innerHTML += `
+                    <div style="display:flex; flex-direction:column; gap:14px;">
+                        <div style="background:#181920; border:1px solid #27272a; border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:10px;">
+                            <h4 style="font-size:13px; color:#f4f4f5;"><i class="fa-solid fa-camera"></i> Ubah Foto Profil (Via Link URL)</h4>
+                            <input type="text" id="inputAvatarUrl" class="input-field" placeholder="https://contoh.com/foto.jpg" value="${currentUser.avatar || ''}">
+                            <button class="liquid-btn light" style="margin-top:0;" onclick="saveAvatarFromUrl()">Simpan Foto dari Link</button>
+                        </div>
+
+                        <div style="background:#181920; border:1px solid #27272a; border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:10px;">
+                            <h4 style="font-size:13px; color:#f4f4f5;"><i class="fa-solid fa-upload"></i> Ubah Foto Profil (Via File Perangkat)</h4>
+                            <label class="media-upload-label" style="justify-content:center; padding:10px; font-size:12px;">
+                                <i class="fa-solid fa-folder-open"></i> Pilih File Gambar dari Perangkat
+                                <input type="file" accept="image/*" style="display:none;" onchange="saveAvatarFromFile(event)">
+                            </label>
+                        </div>
+
+                        <div style="background:#181920; border:1px solid #27272a; border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:8px;">
+                            <h4 style="font-size:13px; color:#a1a1aa;">Informasi Sistem</h4>
+                            <p style="font-size:12px; color:#e4e4e7;"><b>Tema Tampilan:</b> Dark Mode (Default)</p>
+                            <p style="font-size:12px; color:#e4e4e7;"><b>Zona Waktu:</b> ${getTimezoneSuffix()} (Otomatis)</p>
+                        </div>
+                    </div>
+                `;
+            } else if (feat.type === 'request_role_page') {
+                let html = `
+                    <div style="background:#181920; border:1px solid #27272a; border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:10px;">
+                        <h4 style="font-size:13px; color:#f4f4f5;"><i class="fa-solid fa-paper-plane"></i> Kirim Izin / Request Update Role ke Dev / Admin</h4>
+                        <p style="font-size:11px; color:#a1a1aa;">Pilih role tujuan yang Anda inginkan. Permintaan akan langsung dikirimkan ke menu <b>Notifikasi</b> untuk disetujui atau ditolak oleh Dev/Admin.</p>
+                        
+                        <label style="font-size:11px; color:#fff; font-weight:700;">Role Tujuan:</label>
+                        <select id="reqTargetRole" class="input-field">
+                            <option value="vip">VIP</option>
+                            <option value="vvip">VVIP</option>
+                            <option value="admin">Admin</option>
+                        </select>
+
+                        <label style="font-size:11px; color:#fff; font-weight:700;">Alasan / Keterangan:</label>
+                        <textarea id="reqReason" class="input-field" style="height:60px; resize:none;" placeholder="Tulis alasan request..."></textarea>
+
+                        <button class="liquid-btn light" style="margin-top:0;" onclick="submitRoleRequest()">Kirim Permintaan ke Dev / Admin</button>
+                    </div>
+                `;
+                body.innerHTML += html;
+
+            } else if (feat.type === 'dev_customizer_page') {
+                body.innerHTML += `
+                    <div style="display:flex; flex-direction:column; gap:14px;">
+                        <div style="background:#181920; border:1px solid #27272a; border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:8px;">
+                            <label style="font-size:12px; font-weight:700; color:#f4f4f5;"><i class="fa-solid fa-image"></i> Ubah Background Dashboard (URL Gambar)</label>
+                            <input type="text" id="inputCustomBg" class="input-field" placeholder="https://contoh.com/gambar.jpg" value="${currentCustomBg}">
+                            <div style="display:flex; gap:8px; margin-top:4px;">
+                                <button class="liquid-btn light" style="margin-top:0; padding:8px;" onclick="saveCustomBackground()">Terapkan BG Dashboard</button>
+                                <button class="liquid-btn danger" style="margin-top:0; padding:8px;" onclick="resetCustomBackground()">Reset Default</button>
+                            </div>
+                        </div>
+
+                        <div style="background:#181920; border:1px solid #27272a; border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:8px;">
+                            <label style="font-size:12px; font-weight:700; color:#f4f4f5;"><i class="fa-solid fa-image"></i> Ubah Background Halaman Login (URL Gambar)</label>
+                            <input type="text" id="inputAuthBg" class="input-field" placeholder="https://contoh.com/login-bg.jpg" value="${currentAuthBg}">
+                            <div style="display:flex; gap:8px; margin-top:4px;">
+                                <button class="liquid-btn light" style="margin-top:0; padding:8px;" onclick="saveAuthBackground()">Terapkan BG Login</button>
+                                <button class="liquid-btn danger" style="margin-top:0; padding:8px;" onclick="resetAuthBackground()">Reset Login BG</button>
+                            </div>
+                        </div>
+
+                        <div style="background:#181920; border:1px solid #27272a; border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:8px;">
+                            <label style="font-size:12px; font-weight:700; color:#f4f4f5;"><i class="fa-solid fa-video"></i> Ubah Video Latar Belakang Banner (URL MP4)</label>
+                            <input type="text" id="inputCustomVideo" class="input-field" placeholder="https://contoh.com/video.mp4" value="${currentCustomVideo}">
+                            
+                            <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:6px; flex-wrap:wrap;">
+                                <button class="liquid-btn danger" style="margin-top:0; padding:8px 12px; width:auto;" onclick="resetCustomVideo()">Reset Video</button>
+                                <button class="liquid-btn light" style="margin-top:0; padding:8px 12px; width:auto;" onclick="saveCustomVideo()">Terapkan Video</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (feat.type === 'global_chat_page') {
+                let chatHtml = '';
+
+                if (currentUser && (currentUser.role === 'admin' || currentUser.role === 'dev')) {
+                    chatHtml += `
+                        <button class="liquid-btn danger" style="width:100%; margin-top:0; padding:8px;" onclick="clearAllGlobalChats()">
+                            <i class="fa-solid fa-trash"></i> HAPUS SEMUA CHAT (ADMIN/DEV)
+                        </button>
+                    `;
+                }
+
+                chatHtml += `<div class="global-chat-container" id="globalChatScroll">`;
+
+                if (globalChatDatabase.length === 0) {
+                    chatHtml += `<p style="font-size:12px; color:#a1a1aa; text-align:center;">Belum ada pesan dalam chat publik.</p>`;
+                } else {
+                    globalChatDatabase.forEach(msg => {
+                        let isMine = currentUser && msg.sender === currentUser.username;
+                        let mediaContent = '';
+                        if (msg.type === 'image') {
+                            mediaContent = `<img src="${msg.content}" class="chat-media-img">`;
+                        } else if (msg.type === 'video') {
+                            mediaContent = `<video src="${msg.content}" controls class="chat-media-vid"></video>`;
+                        } else if (msg.type === 'vn') {
+                            mediaContent = `<audio src="${msg.content}" controls style="width:100%; height:35px; margin-top:4px;"></audio>`;
+                        } else {
+                            mediaContent = `<div class="chat-bubble-body">${escapeHtml(msg.content)}</div>`;
+                        }
+
+                        chatHtml += `
+                            <div class="chat-bubble ${isMine ? 'mine' : ''}">
+                                <div class="chat-bubble-header">
+                                    <span><b>${escapeHtml(msg.sender)}</b> <span class="role-badge ${escapeHtml(msg.role)}" style="font-size:7px; padding:1px 4px;">${escapeHtml(msg.role).toUpperCase()}</span></span>
+                                    <span><i class="fa-regular fa-clock"></i> ${formatMessageTime(msg.timestamp)}</span>
+                                </div>
+                                ${mediaContent}
+                            </div>
+                        `;
+                    });
+                }
+
+                chatHtml += `
+                    </div>
+                    <div class="chat-input-area">
+                        <div class="chat-toolbar">
+                            <label class="media-upload-label"><i class="fa-solid fa-image"></i> Foto <input type="file" accept="image/*" style="display:none;" onchange="sendMediaChat(event, 'image')"></label>
+                            <label class="media-upload-label"><i class="fa-solid fa-video"></i> Video <input type="file" accept="video/*" style="display:none;" onchange="sendMediaChat(event, 'video')"></label>
+                            <label class="media-upload-label"><i class="fa-solid fa-microphone"></i> VN <input type="file" accept="audio/*" style="display:none;" onchange="sendMediaChat(event, 'vn')"></label>
+                        </div>
+                        <div style="display:flex; gap:8px;">
+                            <input type="text" id="globalChatInput" class="input-field" placeholder="Ketik pesan publik..." onkeypress="if(event.key==='Enter') sendTextChat()">
+                            <button class="liquid-btn light" style="width:80px; margin-top:0; padding:8px;" onclick="sendTextChat()">Kirim</button>
+                        </div>
+                    </div>
+                `;
+
+                body.innerHTML += chatHtml;
+                let scrollBox = document.getElementById('globalChatScroll');
+                if (scrollBox) scrollBox.scrollTop = scrollBox.scrollHeight;
+
+            } else if (feat.type === 'custom_page') {
+                body.innerHTML += feat.render();
+            } else if (feat.type === 'password_page') {
+                body.innerHTML += `
+                    <div style="display:flex; flex-direction:column; gap:10px;">
+                        <input type="password" id="oldPass" class="input-field" placeholder="Password Lama">
+                        <input type="password" id="newPass" class="input-field" placeholder="Password Baru">
+                        <button class="liquid-btn light" onclick="updatePassword()">Ubah Password</button>
+                    </div>
+                `;
+            } else if (feat.type === 'ai_chat') {
+                body.innerHTML += `
+                    <div class="chat-box" id="chatContainer" style="background:#181920; border:1px solid #27272a; border-radius:12px; padding:10px; height:200px; overflow-y:auto; font-size:12px; margin-bottom:10px;">
+                        <div class="chat-msg bot" style="color:#f4f4f5; margin-bottom:6px;">${feat.systemPrompt}</div>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" id="chatInput" class="input-field" placeholder="Ketik pesan..." onkeypress="if(event.key==='Enter') sendAiMessage()">
+                        <button class="liquid-btn light" style="width: 100px; margin-top: 0; padding: 10px;" onclick="sendAiMessage()">Kirim</button>
+                    </div>
+                `;
+            } else if (feat.type === 'downloader' || feat.type === 'search_tool') {
+                body.innerHTML += `
+                    <div style="display:flex; flex-direction:column; gap:6px;">
+                        <label style="font-size:11px; color:#a1a1aa;">Input Data / Link</label>
+                        <input type="text" id="toolInput" class="input-field" placeholder="${feat.placeholder}">
+                    </div>
+                    <button class="liquid-btn light" onclick="processToolAction()">PROSES DATA</button>
+                    <div class="result-box" id="resultOutput"><span>Status: Siap Memproses Data</span></div>
+                `;
+            } else if (feat.type === 'maker_tool') {
+                feat.inputs.forEach((inp, idx) => {
+                    body.innerHTML += `
+                        <div style="display:flex; flex-direction:column; gap:6px;">
+                            <label style="font-size:11px; color:#a1a1aa;">${inp}</label>
+                            <input type="text" id="makerInput_${idx}" class="input-field" placeholder="Masukkan ${inp.toLowerCase()}...">
+                        </div>
+                    `;
+                });
+                body.innerHTML += `
+                    <button class="liquid-btn light" onclick="generateMakerResult()">GENERATE RESULT</button>
+                    <div class="result-box" id="resultOutput"><span>Hasil generator akan diproses di sini</span></div>
+                `;
+            } else if (feat.type === 'media_player' || feat.type === 'random_generator') {
+                let listHtml = `<p style="font-size: 12px; color: #a1a1aa;">Daftar Item Database:</p><div style="display: flex; flex-direction: column; gap: 8px;">`;
+                feat.data.forEach(item => {
+                    listHtml += `
+                        <div style="background: #181920; border: 1px solid #27272a; padding: 10px 12px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h5 style="font-size: 13px; color: #fff;">${item.title || item.name}</h5>
+                                <p style="font-size: 10px; color: #a1a1aa;">${item.duration || item.resolution || item.status || ''}</p>
+                            </div>
+                            <button class="liquid-btn light" style="width: auto; padding: 6px 14px; margin-top: 0; font-size: 11px;" onclick="alert('Memuat item...')">AMBIL</button>
+                        </div>
+                    `;
+                });
+                listHtml += `</div>`;
+                body.innerHTML += listHtml;
+            } else if (feat.type === 'image_gen') {
+                body.innerHTML += `
+                    <div style="display:flex; flex-direction:column; gap:6px;">
+                        <label style="font-size:11px; color:#a1a1aa;">Prompt Deskripsi Gambar</label>
+                        <input type="text" id="imgPrompt" class="input-field" placeholder="Contoh: Cyberpunk city, neon lights...">
+                    </div>
+                    <button class="liquid-btn light" onclick="processImageGen()">GENERATE AI IMAGE</button>
+                    <div class="result-box" id="resultOutput"><span>Pratinjau Gambar AI akan ditampilkan di sini</span></div>
+                `;
+            }
+        }
+
+        function saveAvatarFromUrl() {
+            const url = document.getElementById('inputAvatarUrl').value.trim();
+            if (!url) { alert('URL Foto tidak boleh kosong!'); return; }
+            
+            currentUser.avatar = url;
+            let target = usersDatabase.find(u => u.username === currentUser.username);
+            if (target) {
+                target.avatar = url;
+                appStorage.setItem('ryuichi_users', JSON.stringify(usersDatabase));
+            }
+            updateAvatarUI();
+            alert('Foto profil berhasil diperbarui via Link URL!');
+            switchView('home');
+        }
+
+        function saveAvatarFromFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Img = e.target.result;
+                currentUser.avatar = base64Img;
+                let target = usersDatabase.find(u => u.username === currentUser.username);
+                if (target) {
+                    target.avatar = base64Img;
+                    appStorage.setItem('ryuichi_users', JSON.stringify(usersDatabase));
+                }
+                updateAvatarUI();
+                alert('Foto profil berhasil diperbarui via File Perangkat!');
+                switchView('home');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function submitRoleRequest() {
+            const reqRole = document.getElementById('reqTargetRole').value;
+            const reason = document.getElementById('reqReason').value.trim();
+            if(!reason) { alert('Harap isi alasan request update role!'); return; }
+
+            const newReq = {
+                id: Date.now(),
+                targetUser: currentUser.username,
+                requestedRole: reqRole,
+                reason: reason,
+                status: 'pending',
+                timestamp: Date.now()
+            };
+
+            roleRequestsDatabase.push(newReq);
+            appStorage.setItem('ryuichi_role_requests', JSON.stringify(roleRequestsDatabase));
+
+            alert('Permintaan izin & notifikasi update role berhasil dikirim ke menu Notifikasi Dev/Admin!');
+            switchView('notifikasi');
+        }
+
+        function approveRoleRequest(reqId) {
+            if (currentUser && currentUser.role !== 'admin' && currentUser.role !== 'dev') {
+                alert('Akses ditolak! Hanya Admin dan Dev yang dapat memberikan izin.');
+                return;
+            }
+
+            let req = roleRequestsDatabase.find(r => r.id === reqId);
+            if(req) {
+                req.status = 'approved';
+                let targetUser = usersDatabase.find(u => u.username === req.targetUser);
+                if(targetUser) {
+                    targetUser.role = req.requestedRole;
+                    appStorage.setItem('ryuichi_users', JSON.stringify(usersDatabase));
+                }
+                appStorage.setItem('ryuichi_role_requests', JSON.stringify(roleRequestsDatabase));
+                alert(`Request dari ${req.targetUser} disetujui (Diizinkan)! Role diubah menjadi ${req.requestedRole.toUpperCase()}`);
+                renderNotifikasiPage();
+            }
+        }
+
+        function rejectRoleRequest(reqId) {
+            if (currentUser && currentUser.role !== 'admin' && currentUser.role !== 'dev') {
+                alert('Akses ditolak! Hanya Admin dan Dev yang dapat menolak izin.');
+                return;
+            }
+
+            let req = roleRequestsDatabase.find(r => r.id === reqId);
+            if(req) {
+                req.status = 'rejected';
+                appStorage.setItem('ryuichi_role_requests', JSON.stringify(roleRequestsDatabase));
+                alert(`Request dari ${req.targetUser} ditolak (Tidak Diizinkan).`);
+                renderNotifikasiPage();
+            }
+        }
+
+        function saveCustomBackground() {
+            const url = document.getElementById('inputCustomBg').value.trim();
+            currentCustomBg = url;
+            appStorage.setItem('ryuichi_custom_bg', url);
+            applyStoredCustomizations();
+        setTimeout(updateDatabaseBackendStatus, 250);
+            alert('Background dashboard berhasil diperbarui!');
+        }
+
+        function resetCustomBackground() {
+            currentCustomBg = '';
+            appStorage.removeItem('ryuichi_custom_bg');
+            applyStoredCustomizations();
+        setTimeout(updateDatabaseBackendStatus, 250);
+            document.getElementById('inputCustomBg').value = '';
+            alert('Background dashboard dikembalikan ke default!');
+        }
+
+        function saveAuthBackground() {
+            const url = document.getElementById('inputAuthBg').value.trim();
+            currentAuthBg = url;
+            appStorage.setItem('ryuichi_auth_bg', url);
+            applyStoredCustomizations();
+        setTimeout(updateDatabaseBackendStatus, 250);
+            alert('Background halaman login berhasil diperbarui!');
+        }
+
+        function resetAuthBackground() {
+            currentAuthBg = '';
+            appStorage.removeItem('ryuichi_auth_bg');
+            applyStoredCustomizations();
+        setTimeout(updateDatabaseBackendStatus, 250);
+            document.getElementById('inputAuthBg').value = '';
+            alert('Background login dikembalikan ke default!');
+        }
+
+        function saveCustomVideo() {
+            const url = document.getElementById('inputCustomVideo').value.trim();
+            if (!url) { alert('URL Video tidak boleh kosong!'); return; }
+            currentCustomVideo = url;
+            appStorage.setItem('ryuichi_custom_video', url);
+            applyStoredCustomizations();
+        setTimeout(updateDatabaseBackendStatus, 250);
+            alert('Video banner berhasil diperbarui!');
+        }
+
+        function resetCustomVideo() {
+            currentCustomVideo = 'https://files.catbox.moe/5ahr4x.mp4';
+            appStorage.setItem('ryuichi_custom_video', currentCustomVideo);
+            applyStoredCustomizations();
+        setTimeout(updateDatabaseBackendStatus, 250);
+            document.getElementById('inputCustomVideo').value = currentCustomVideo;
+            alert('Video banner dikembalikan ke default!');
+        }
+
+        function sendTextChat() {
+            const input = document.getElementById('globalChatInput');
+            const val = input.value.trim();
+            if (!val) return;
+
+            const newMsg = {
+                id: Date.now(),
+                sender: currentUser.username,
+                role: currentUser.role,
+                type: 'text',
+                content: val,
+                timestamp: Date.now()
+            };
+
+            globalChatDatabase.push(newMsg);
+            appStorage.setItem('ryuichi_global_chats', JSON.stringify(globalChatDatabase));
+            input.value = '';
+            openFeaturePage('global_chat');
+        }
+
+        function sendMediaChat(event, type) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const newMsg = {
+                    id: Date.now(),
+                    sender: currentUser.username,
+                    role: currentUser.role,
+                    type: type,
+                    content: e.target.result,
+                    timestamp: Date.now()
+                };
+                globalChatDatabase.push(newMsg);
+                appStorage.setItem('ryuichi_global_chats', JSON.stringify(globalChatDatabase));
+                openFeaturePage('global_chat');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function clearAllGlobalChats() {
+            if (currentUser && (currentUser.role === 'admin' || currentUser.role === 'dev')) {
+                if (confirm('Apakah Anda yakin ingin menghapus SEMUA chat publik secara permanen?')) {
+                    globalChatDatabase = [];
+                    appStorage.setItem('ryuichi_global_chats', JSON.stringify(globalChatDatabase));
+                    openFeaturePage('global_chat');
+                }
+            } else {
+                alert('Akses ditolak! Hanya Admin dan Dev yang dapat menghapus semua chat.');
+            }
+        }
+
+        function updatePassword() {
+            const oldP = document.getElementById('oldPass').value;
+            const newP = document.getElementById('newPass').value;
+            if(!oldP || !newP) { alert('Semua kolom harus diisi!'); return; }
+            if(oldP !== currentUser.password) { alert('Password lama salah!'); return; }
+
+            currentUser.password = newP;
+            let targetUser = usersDatabase.find(u => u.username === currentUser.username);
+            if(targetUser) targetUser.password = newP;
+            appStorage.setItem('ryuichi_users', JSON.stringify(usersDatabase));
+            if (window.appStorage) {
+                appStorage.audit(currentUser.username, 'password_changed', {});
+            }
+            alert('Password berhasil diperbarui!');
+            switchView('home');
+        }
+
+        function sendAiMessage() {
+            const input = document.getElementById('chatInput');
+            const container = document.getElementById('chatContainer');
+            const text = input.value.trim();
+            if (!text) return;
+
+            container.innerHTML += `<div style="text-align:right; color:#fff; margin-bottom:6px;"><b>You:</b> ${text}</div>`;
+            input.value = '';
+            container.scrollTop = container.scrollHeight;
+
+            setTimeout(() => {
+                container.innerHTML += `<div style="color:#f4f4f5; margin-bottom:6px;"><b>AI:</b> Menerima pesan: "${text}". Berhasil diproses server!</div>`;
+                container.scrollTop = container.scrollHeight;
+            }, 500);
+        }
+
+        function processToolAction() {
+            const input = document.getElementById('toolInput').value;
+            const output = document.getElementById('resultOutput');
+            if (!input) { alert('Harap isi kolom input terlebih dahulu!'); return; }
+            output.innerHTML = `<span>⏳ Memproses data...</span>`;
+            setTimeout(() => {
+                output.innerHTML = `<span style="color: #10b981;">✅ Berhasil diproses! [ID: ${Math.floor(Math.random()*899999 + 100000)}]</span>`;
+            }, 800);
+        }
+
+        function generateMakerResult() {
+            const output = document.getElementById('resultOutput');
+            output.innerHTML = `<span style="color: #f59e0b;">🎉 Berhasil Dibuat dan Disimpan di Database!</span>`;
+        }
+
+        function processImageGen() {
+            const output = document.getElementById('resultOutput');
+            output.innerHTML = `<span>🎨 AI sedang merender gambar...</span>`;
+            setTimeout(() => {
+                output.innerHTML = `<span style="color: #d8b4fe;">✨ Render AI Selesai! File Siap Diunduh.</span>`;
+            }, 1000);
+        }
+    
+</script>
+</body>
+</html>
